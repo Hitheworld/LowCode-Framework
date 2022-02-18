@@ -2,7 +2,7 @@ import { createContext, useReducer } from 'react';
 
 export const RootStoreContext = createContext<any>('context');
 
-// 通过import.meta.globEager获取某个模块下的所有文件
+// 通过import.meta.globEager获取某个模块下的所有文件-test
 const reduceModule = import.meta.globEager('./reduce/*.ts');
 const stateModule = import.meta.globEager('./state/*.ts');
 
