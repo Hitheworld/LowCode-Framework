@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/public/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>这是一个低代码示例</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module">
+      import { embed } from '/src/main.tsx';
+      const schemas = {
+        type: 'page',
+        aside: [
+          {
+            type: 'tpl',
+            tpl: '这是侧边栏部分',
+          },
+        ],
+        // toolbar: [
+        //   {
+        //     type: 'tpl',
+        //     tpl: '这是工具栏部分',
+        //   },
+        // ],
+        body: [
+          {
+            type: 'tpl',
+            tpl: '<div>这是内容区</div>',
+          },
+        ],
+        // body: '这是内容区',
+      };
+      embed('#root', schemas, {}, null);
+    </script>
+  </body>
+</html>

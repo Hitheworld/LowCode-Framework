@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/public/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>这是一个低代码示例</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module">
+      import { embed } from '/src/main.tsx';
+      // const schemas = {
+      //   type: 'app',
+      //   brandName: 'Admin',
+      //   logo: './public/logo.png',
+      //   header: {
+      //     type: 'tpl',
+      //     inline: false,
+      //     className: 'w-full',
+      //     tpl: '<div class="flex justify-between"><div>顶部区域左侧</div><div>顶部区域右侧</div></div>',
+      //   },
+      //   // footer: '<div class="p-2 text-center bg-light">底部区域</div>',
+      //   asideBefore: '<div class="p-2 text-center">菜单前面区域</div>',
+      //   asideAfter: '<div class="p-2 text-center">菜单后面区域</div>',
+      //   api: 'get:./pages/site.json',
+      // };
+
+      const schemas = {
+        type: 'page',
+        title: '正标题',
+        subTitle: '副标题',
+        aside: [
+          {
+            type: 'nav',
+            stacked: true,
+            className: 'w-md',
+            links: [
+              {
+                label: 'Nav 1',
+                to: '/docs/index',
+                icon: 'fa fa-user',
+                active: true,
+              },
+              {
+                label: 'Nav 2',
+                unfolded: true,
+                children: [
+                  {
+                    label: 'Nav 2-1',
+                    children: [
+                      {
+                        label: 'Nav 2-1-1',
+                        to: '/docs/api-2-1-1',
+                      },
+                    ],
+                  },
+                  {
+                    label: 'Nav 2-2',
+                    to: '/docs/api-2-2',
+                  },
+                ],
+              },
+              {
+                label: 'Nav 3',
+                to: '/docs/renderers',
+              },
+            ],
+          },
+        ],
+        toolbar: [
+          {
+            type: 'tpl',
+            tpl: '这是工具栏部分',
+          },
+        ],
+        body: [
+          {
+            type: 'tpl',
+            tpl: '这是内容区1',
+          },
+          {
+            type: 'tpl',
+            tpl: '这是内容区2',
+          },
+          {
+            label: '点击弹框',
+            type: 'button',
+            actionType: 'dialog',
+            dialog: {
+              title: '弹框标题',
+              body: '这是一个弹框',
+            },
+          },
+          {
+            type: 'drawer',
+            drawer: {
+              show: true,
+              title: '抽屉标题',
+              body: '这是一个抽屉',
+            },
+          },
+        ],
+      };
+
+      const appSchemas = {
+        type: 'app',
+        brandName: 'Admin',
+        logo: './public/logo.png',
+        header: {
+          type: 'tpl',
+          inline: false,
+          className: 'w-full',
+          tpl: '<div class="flex justify-between"><div>顶部区域左侧</div><div>顶部区域右侧</div></div>',
+        },
+        // footer: '<div class="p-2 text-center bg-light">底部区域</div>',
+        // asideBefore: '<div class="p-2 text-center">菜单前面区域</div>',
+        // asideAfter: '<div class="p-2 text-center">菜单后面区域</div>',
+        api: 'get:./pages/site.json',
+      };
+      embed('#root', appSchemas, {}, null);
+    </script>
+  </body>
+</html>
