@@ -6,5 +6,3 @@ export default {
   navigations: [], // 导航菜单
   bcn: [], // 面包屑
 };
-
-// export default state;

@@ -17,11 +17,11 @@ function mergeModuls(modules: any, throwOut: string) {
     let module = modules[path].default;
     console.log('module:', module);
     console.log('module.name:', module.name);
-    // console.log('mod[throwOut]:', throwOut);
     // multiple[throwOut] = module;
-    multiple[module.name] = module[throwOut];
+    // multiple[module.name] = module[throwOut];
+    multiple = module;
   }
-
+  console.log('multiple:', multiple);
   return multiple;
 }
 

@@ -73,7 +73,8 @@ export default function Root(props: Root.RootProps) {
     themeName = 'cxd';
   }
 
-  const [state, dispatch] = useReducer(reducer, multipleState);
+  const [state, dispatch] = useReducer(multipleReducer, multipleState);
+  console.log('新的reducer:', reducer);
   console.log('新的state:', state);
   console.log('新的multipleState:', multipleState);
 
