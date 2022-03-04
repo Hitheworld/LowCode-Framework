@@ -23,7 +23,7 @@ function rewrite(state: AppStore.State, to: string, env: Env.RendererEnv) {
 function setActivePage(
   state: AppStore.State,
   page: any,
-  env: RendererEnv,
+  env: Env.RendererEnv,
   params?: any
 ) {
   // 同一个页面直接返回。
@@ -161,6 +161,7 @@ const reducer = (state: AppStore.State, action: AppStore.IAction) => {
     // 更新当前活动页面
     case AppActions.UPDATE_ACTIVE_PAGE:
       const pages = action.payload.pages;
+      const env = action.payload.env;
       if (!Array.isArray(pages)) {
         return state;
       }
@@ -180,12 +181,13 @@ const reducer = (state: AppStore.State, action: AppStore.IAction) => {
         setActivePage(
           state,
           page,
+          env,
           typeof matched === 'object' ? matched.params : undefined
         );
       } else {
         const page = findTree(pages, (item) => item.isDefaultPage);
         if (page) {
-          setActivePage(state, page);
+          setActivePage(state, page, env);
         } else {
           state.activePage = null;
         }

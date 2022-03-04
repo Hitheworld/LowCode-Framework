@@ -1,4 +1,5 @@
 import { createBrowserHistory, createHashHistory } from 'history';
+import { match } from 'path-to-regexp';
 import { normalizeLink } from '@/utils/normalizeLink';
 
 // 如果想用 browserHistory 请切换下这处代码, 其他不用变

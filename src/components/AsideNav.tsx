@@ -77,7 +77,9 @@ function AsideNav(props: any) {
 
   // 子目录
   const renderItem = (item: Nav.Link, index: number, depth = 1) => {
-    if (Array.isArray(item?.children) && item?.children?.length) {
+    if (item?.visible === false) {
+      return null;
+    } else if (Array.isArray(item?.children) && item?.children?.length) {
       return (
         <SubMenu
           key={`${index}-${depth}`}
@@ -89,7 +91,7 @@ function AsideNav(props: any) {
           )}
         </SubMenu>
       );
-    } else {
+    } else if (item?.visible === true || item?.visible === undefined || item?.visible === 'undefined') {
       return (
         <Menu.Item key={`${depth}-${index}`} icon={<PieChartOutlined />}>
           {item.path ? (
@@ -108,7 +110,7 @@ function AsideNav(props: any) {
                 onClick={(e: React.MouseEvent<HTMLElement>) =>
                   toggleExpand(item, e)
                 }
-                href={item.path || item.children[0].path}
+                href={item?.path || item?.children?.[0]?.path}
               >
                 {item?.label}
               </a>

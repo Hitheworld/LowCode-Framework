@@ -1,20 +1,11 @@
 import React, { useState, useEffect, useContext, useReducer } from 'react';
-import { Layout, Menu, Breadcrumb, Button } from 'antd';
-import {
-  DesktopOutlined,
-  PieChartOutlined,
-  FileOutlined,
-  TeamOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
+import { Layout, Menu, Breadcrumb } from 'antd';
 import { initialState, reducer } from '@/store/app';
 import { AppActions } from '@/store/app';
 import { Renderer, EnvContext } from '@/factory';
 import { useRequest } from '@/hooks/useRequest';
-import { mapTree, guid, findTree, createObject } from '@/utils/helper';
 import AsideNav from '@/components/AsideNav';
 import NotFound from '@/components/NotFound';
-import { updateLocation, jumpTo, isCurrentUrl } from '@/utils/appUtils';
 import { RootStoreContext } from '@/store';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -27,9 +18,6 @@ function Page(props: any) {
 
   // const [state, dispatch] = useReducer(reducer, initialState);
   const { state, dispatch } = useContext(RootStoreContext);
-
-  console.log('App组件state:', state);
-  console.log('App组件dispatch:', dispatch);
 
   useEffect(() => {
     updateActivePage();
@@ -48,7 +36,7 @@ function Page(props: any) {
   const updateActivePage = () => {
     dispatch({
       type: AppActions.UPDATE_ACTIVE_PAGE,
-      payload: { pages: initData?.pages },
+      payload: { pages: initData?.pages, env: env },
     });
   };
 
@@ -81,7 +69,7 @@ function Page(props: any) {
               {state.activePage && state.schema ? (
                 <div>
                   {render('page', state.schema, {
-                    key: `${activePage?.id}-${schemaKey}`,
+                    key: `${state.activePage?.id}-${state.schemaKey}`,
                     // data: createObject(self.data, {
                     //   params: activePage?.params || {},
                     // }),
