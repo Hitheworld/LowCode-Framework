@@ -28,13 +28,13 @@ function AsideNav(props: any) {
 
   const [_, dispatch] = useReducer(reducer, initialState);
 
-  const [navigations, setNavigations] = useState([]);
+  const [navigations, setNavigations] = useState<AsideNav.LinkItemProps[]>([]);
   useEffect(() => {
     if (props.navigations?.length) {
       let id = 1;
       const _list = mapTree(
         props.navigations,
-        (item: Navigation) => {
+        (item: AsideNav.Navigation) => {
           const isActive =
             typeof item.active === 'undefined'
               ? (props.isActive as Function)(item)
@@ -44,13 +44,12 @@ function AsideNav(props: any) {
             ...item,
             id: id++,
             active: isActive,
-            open: isActive || props?.isOpen?.(item as LinkItemProps),
+            open: isActive || props?.isOpen?.(item as AsideNav.LinkItemProps),
           };
         },
         1,
         true
       );
-      console.log('useEffect-内部List:', _list);
       setNavigations(_list);
     }
   }, [props.navigations]);

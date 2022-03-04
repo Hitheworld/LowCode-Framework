@@ -2,8 +2,8 @@ import { mapTree, findTree, guid } from '@/utils/helper';
 import { updateLocation, jumpTo, isCurrentUrl } from '@/utils/appUtils';
 
 export enum AppActions {
-  INIT = 'init',
   SET_PAGES = 'setPages',
+  SET_ACTIVE_PAGE = 'setActivePage',
   UPDATE_ACTIVE_PAGE = 'updateActivePage',
   TOGGLE_EXPAND = 'toggleExpand',
 }
@@ -29,7 +29,9 @@ function setActivePage(
 ) {
   // 同一个页面直接返回。
   if (state.activePage?.id === page.id) {
-    return;
+    return {
+      ...state,
+    };
   }
   let bcn: Array<any> = [];
   findTree(state.pages, (item, index, level, paths) => {
@@ -77,6 +79,9 @@ function setActivePage(
     state.schema = null;
     state.schemaKey = '';
   }
+  return {
+    ...state,
+  };
 }
 
 function getNavigations(pages: Array<AsideNav.Navigation>) {
