@@ -23,10 +23,37 @@ const { Sider } = Layout;
 const { SubMenu } = Menu;
 
 function AsideNav(props: any) {
-  const { logo, menus, env } = props;
+  const { logo, env } = props;
   console.log('AsideNav-props:', props);
 
   const [_, dispatch] = useReducer(reducer, initialState);
+
+  const [navigations, setNavigations] = useState([]);
+  useEffect(() => {
+    if (props.navigations?.length) {
+      let id = 1;
+      const _list = mapTree(
+        props.navigations,
+        (item: Navigation) => {
+          const isActive =
+            typeof item.active === 'undefined'
+              ? (props.isActive as Function)(item)
+              : item.active;
+
+          return {
+            ...item,
+            id: id++,
+            active: isActive,
+            open: isActive || props?.isOpen?.(item as LinkItemProps),
+          };
+        },
+        1,
+        true
+      );
+      console.log('useEffect-内部List:', _list);
+      setNavigations(_list);
+    }
+  }, [props.navigations]);
 
   const [currMenuItem, setCurrMenuItem] =
     useState<AsideNav.LinkItemProps | null>(null);
@@ -55,7 +82,7 @@ function AsideNav(props: any) {
     console.log('展开了============', e, item);
     dispatch({
       type: AppActions.TOGGLE_EXPAND,
-      payload: { id: item?.id, pages: menus },
+      payload: { id: item?.id, pages: navigations },
     });
     // this.setState({
     //   navigations: mapTree(
@@ -91,7 +118,11 @@ function AsideNav(props: any) {
           )}
         </SubMenu>
       );
-    } else if (item?.visible === true || item?.visible === undefined || item?.visible === 'undefined') {
+    } else if (
+      item?.visible === true ||
+      item?.visible === undefined ||
+      item?.visible === 'undefined'
+    ) {
       return (
         <Menu.Item key={`${depth}-${index}`} icon={<PieChartOutlined />}>
           {item.path ? (
@@ -132,6 +163,8 @@ function AsideNav(props: any) {
     }
   };
 
+  console.log('navigations:', navigations);
+
   return (
     <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
       <div className="logo">{logo}</div>
@@ -147,8 +180,8 @@ function AsideNav(props: any) {
       </div>
 
       <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-        {Array.isArray(menus)
-          ? menus?.map((item, index) => renderItem(item, index))
+        {Array.isArray(navigations)
+          ? navigations?.map((item, index) => renderItem(item, index))
           : null}
       </Menu>
     </Sider>

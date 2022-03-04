@@ -6,6 +6,7 @@ import { Renderer, EnvContext } from '@/factory';
 import { useRequest } from '@/hooks/useRequest';
 import AsideNav from '@/components/AsideNav';
 import NotFound from '@/components/NotFound';
+import { isCurrentUrl } from '@/utils/appUtils';
 import { RootStoreContext } from '@/store';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -45,7 +46,13 @@ function Page(props: any) {
   return (
     <>
       <Layout style={{ minHeight: '100vh' }}>
-        <AsideNav logo="图标文件" menus={state.pages} env={env} />
+        <AsideNav
+          logo="图标文件"
+          navigations={state.navigations}
+          // isActive={(link: any) => !!env.isCurrentUrl(link?.path, link)}
+          isActive={(link: any) => !!isCurrentUrl(link?.path, link)}
+          env={env}
+        />
 
         <Layout className="site-layout">
           <Header style={{ padding: 0 }}>

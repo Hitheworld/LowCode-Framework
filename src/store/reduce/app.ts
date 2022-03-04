@@ -2,6 +2,7 @@ import { mapTree, findTree, guid } from '@/utils/helper';
 import { updateLocation, jumpTo, isCurrentUrl } from '@/utils/appUtils';
 
 export enum AppActions {
+  INIT = 'init',
   SET_PAGES = 'setPages',
   UPDATE_ACTIVE_PAGE = 'updateActivePage',
   TOGGLE_EXPAND = 'toggleExpand',
@@ -154,9 +155,70 @@ const reducer = (state: AppStore.State, action: AppStore.IAction) => {
           path,
         };
       });
+
+      const _navList = mapTree(_pageList, (item) => {
+        let visible = item.visible;
+
+        if (
+          visible !== false &&
+          item.path &&
+          !~item.path.indexOf('http') &&
+          ~item.path.indexOf(':')
+        ) {
+          visible = false;
+          if (Array.isArray(self.pages)) {
+            return mapTree(self.pages, (item) => {
+              let visible = item.visible;
+
+              if (
+                visible !== false &&
+                item.path &&
+                !~item.path.indexOf('http') &&
+                ~item.path.indexOf(':')
+              ) {
+                visible = false;
+              }
+
+              return {
+                label: item.label,
+                icon: item.icon,
+                path: item.path,
+                children: item.children,
+                className: item.className,
+                visible,
+              };
+            });
+          }
+
+          return [
+            {
+              label: '导航',
+              children: [],
+            },
+          ];
+        }
+
+        return {
+          label: item.label,
+          icon: item.icon,
+          path: item.path,
+          children: item.children,
+          className: item.className,
+          visible,
+        };
+      });
+
+      const _inavList = [
+        {
+          label: '导航',
+          children: [],
+        },
+      ];
+
       return {
         ...state,
         pages: _pageList,
+        navigations: Array.isArray(_pageList) ? _navList : _inavList,
       };
     // 更新当前活动页面
     case AppActions.UPDATE_ACTIVE_PAGE:
