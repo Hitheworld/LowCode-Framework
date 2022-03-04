@@ -118,11 +118,7 @@ function AsideNav(props: any) {
           )}
         </SubMenu>
       );
-    } else if (
-      item?.visible === true ||
-      item?.visible === undefined ||
-      item?.visible === 'undefined'
-    ) {
+    } else {
       return (
         <Menu.Item key={`${depth}-${index}`} icon={<PieChartOutlined />}>
           {item.path ? (
