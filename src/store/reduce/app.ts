@@ -120,33 +120,6 @@ function getNav(pages: Array<AsideNav.Navigation>) {
         ~item.path.indexOf(':')
       ) {
         visible = false;
-        if (Array.isArray(pages)) {
-          return mapTree(pages, (item) => {
-            let visible = item.visible;
-            if (
-              visible !== false &&
-              item.path &&
-              !~item.path.indexOf('http') &&
-              ~item.path.indexOf(':')
-            ) {
-              visible = false;
-            }
-            return {
-              label: item.label,
-              icon: item.icon,
-              path: item.path,
-              children: item.children,
-              className: item.className,
-              visible,
-            };
-          });
-        }
-        return [
-          {
-            label: '导航',
-            children: [],
-          },
-        ];
       }
       return {
         label: item.label,
