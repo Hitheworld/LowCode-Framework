@@ -20,10 +20,6 @@ function Page(props: any) {
   // const [state, dispatch] = useReducer(reducer, initialState);
   const { state, dispatch } = useContext(RootStoreContext);
 
-  useEffect(() => {
-    updateActivePage();
-  }, []);
-
   const { initLoading, initData } = useRequest(props?.api);
   useEffect(() => {
     if (initData) {
@@ -31,15 +27,12 @@ function Page(props: any) {
         type: AppActions.SET_PAGES,
         payload: { pages: initData?.pages },
       });
+      dispatch({
+        type: AppActions.UPDATE_ACTIVE_PAGE,
+        payload: { pages: initData?.pages, env: props.env },
+      });
     }
   }, [initData]);
-
-  const updateActivePage = () => {
-    dispatch({
-      type: AppActions.UPDATE_ACTIVE_PAGE,
-      payload: { pages: initData?.pages, env: env },
-    });
-  };
 
   console.log('数据中心:', state);
 

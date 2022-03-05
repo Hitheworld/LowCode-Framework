@@ -3,7 +3,6 @@ import { updateLocation, jumpTo, isCurrentUrl } from '@/utils/appUtils';
 
 export enum AppActions {
   SET_PAGES = 'setPages',
-  SET_ACTIVE_PAGE = 'setActivePage',
   UPDATE_ACTIVE_PAGE = 'updateActivePage',
   TOGGLE_EXPAND = 'toggleExpand',
 }
@@ -53,20 +52,34 @@ function setActivePage(
     return false;
   });
 
-  state.activePage = {
-    ...page,
-    params: params || {},
-    bcn,
-  };
+  // state.activePage = {
+  //   ...page,
+  //   params: params || {},
+  //   bcn,
+  // };
 
   if (page.label) {
     document.title = page.label;
   }
 
-  if (page.schema) {
-    state.schema = page.schema;
-    state.schemaKey = '' + Date.now();
-  } else if (page.schemaApi) {
+  // if (page.schema) {
+  //   state.schema = page.schema;
+  //   state.schemaKey = '' + Date.now();
+  // } else if (page.schemaApi) {
+  //   state.schema = null;
+  //   state.fetchSchema(page.schemaApi, state.activePage, { method: 'get' });
+  // } else if (page.redirect) {
+  //   // env.jumpTo(page.redirect);
+  //   jumpTo(page.redirect);
+  //   return;
+  // } else if (page.rewrite) {
+  //   rewrite(state, page.rewrite, env);
+  // } else {
+  //   state.schema = null;
+  //   state.schemaKey = '';
+  // }
+
+  if (page.schemaApi) {
     state.schema = null;
     state.fetchSchema(page.schemaApi, state.activePage, { method: 'get' });
   } else if (page.redirect) {
@@ -75,12 +88,16 @@ function setActivePage(
     return;
   } else if (page.rewrite) {
     rewrite(state, page.rewrite, env);
-  } else {
-    state.schema = null;
-    state.schemaKey = '';
   }
   return {
     ...state,
+    activePage: {
+      ...page,
+      params: params || {},
+      bcn,
+    },
+    schema: page.schema ? page.schema : null,
+    schemaKey: page.schema ? '' + Date.now() : '',
   };
 }
 

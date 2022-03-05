@@ -26,7 +26,7 @@ function AsideNav(props: any) {
   const { logo, env } = props;
   console.log('AsideNav-props:', props);
 
-  const [_, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const [navigations, setNavigations] = useState<AsideNav.LinkItemProps[]>([]);
   useEffect(() => {
@@ -158,7 +158,7 @@ function AsideNav(props: any) {
     }
   };
 
-  console.log('navigations:', navigations);
+  console.log('AsideNav==state:', state);
 
   return (
     <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
