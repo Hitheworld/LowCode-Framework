@@ -40,9 +40,13 @@ function Page(props: any) {
         type: AppActions.UPDATE_ACTIVE_PAGE,
         payload: { pages: initData?.pages, env: props.env },
       });
-      console.log('useEffect-pages:', state);
     }
   }, [state.pages]);
+
+  useEffect(() => {
+    console.log('useEffect-pages:', props.location.location.pathname);
+  }, [props.location.location.pathname]);
+  console.log('location-pages:', props.location.location.pathname);
 
   return (
     <>
