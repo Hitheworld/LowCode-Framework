@@ -1,5 +1,7 @@
 export default {
   pages: [] || null,
+  schema: null,
+  schemaKey: '',
   activePage: null,
   folded: false,
   offScreen: false,

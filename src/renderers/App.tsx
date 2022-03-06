@@ -34,7 +34,15 @@ function Page(props: any) {
     }
   }, [initData]);
 
-  console.log('数据中心:', state);
+  useEffect(() => {
+    if (state.pages?.length) {
+      dispatch({
+        type: AppActions.UPDATE_ACTIVE_PAGE,
+        payload: { pages: initData?.pages, env: props.env },
+      });
+      console.log('useEffect-pages:', state);
+    }
+  }, [state.pages]);
 
   return (
     <>
