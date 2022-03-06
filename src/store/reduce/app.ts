@@ -57,34 +57,20 @@ function setActivePage(
 
   console.log('app数据中心:', state);
 
-  // state.activePage = {
-  //   ...page,
-  //   params: params || {},
-  //   bcn,
-  // };
+  state.activePage = {
+    ...page,
+    params: params || {},
+    bcn,
+  };
 
   if (page.label) {
     document.title = page.label;
   }
 
-  // if (page.schema) {
-  //   state.schema = page.schema;
-  //   state.schemaKey = '' + Date.now();
-  // } else if (page.schemaApi) {
-  //   state.schema = null;
-  //   state.fetchSchema(page.schemaApi, state.activePage, { method: 'get' });
-  // } else if (page.redirect) {
-  //   // env.jumpTo(page.redirect);
-  //   jumpTo(page.redirect);
-  //   return;
-  // } else if (page.rewrite) {
-  //   rewrite(state, page.rewrite, env);
-  // } else {
-  //   state.schema = null;
-  //   state.schemaKey = '';
-  // }
-
-  if (page.schemaApi) {
+  if (page.schema) {
+    state.schema = page.schema;
+    state.schemaKey = '' + Date.now();
+  } else if (page.schemaApi) {
     state.schema = null;
     state.fetchSchema(page.schemaApi, state.activePage, { method: 'get' });
   } else if (page.redirect) {
@@ -93,19 +79,10 @@ function setActivePage(
     return;
   } else if (page.rewrite) {
     rewrite(state, page.rewrite, env);
+  } else {
+    state.schema = null;
+    state.schemaKey = '';
   }
-  console.log('app数据中心===:', state);
-  console.log('app数据中心===page.schema:', page.schema);
-  return {
-    ...state,
-    activePage: {
-      ...page,
-      params: params || {},
-      bcn,
-    },
-    schema: page.schema ? page.schema : null,
-    schemaKey: page.schema ? '' + Date.now() : '',
-  };
 }
 
 function getNavigations(pages: Array<AsideNav.Navigation>) {
