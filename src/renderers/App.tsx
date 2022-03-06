@@ -29,7 +29,7 @@ function Page(props: any) {
       });
       dispatch({
         type: AppActions.UPDATE_ACTIVE_PAGE,
-        payload: { pages: initData?.pages, env: props.env },
+        payload: { env: props.env },
       });
     }
   }, [initData]);

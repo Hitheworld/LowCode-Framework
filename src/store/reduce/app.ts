@@ -94,6 +94,8 @@ function setActivePage(
   } else if (page.rewrite) {
     rewrite(state, page.rewrite, env);
   }
+  console.log('app数据中心===:', state);
+  console.log('app数据中心===page.schema:', page.schema);
   return {
     ...state,
     activePage: {
@@ -220,11 +222,9 @@ const reducer = (state: AppStore.State, action: AppStore.IAction) => {
       };
     // 更新当前活动页面
     case AppActions.UPDATE_ACTIVE_PAGE:
-      const pages = action.payload.pages;
+      const pages = state.pages;
       const env = action.payload.env;
-      console.log('更新当前活动页面:', state);
       if (!Array.isArray(pages)) {
-        console.log('更新当前活动页面f:', state);
         return state;
       }
       let matched: any;
@@ -255,6 +255,7 @@ const reducer = (state: AppStore.State, action: AppStore.IAction) => {
           state.activePage = null;
         }
       }
+      console.log('更新当前活动页面state:', state);
       return {
         ...state,
       };
