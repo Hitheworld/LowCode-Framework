@@ -160,14 +160,11 @@ export function mainRender(
     // ),
   } as any;
 
-  console.log('factory-options:', options);
-
   let theme = props?.theme || options?.theme || 'cxd';
 
   const env = {
     ...options,
   };
-  console.log('EnvContext:', env);
   return (
     <EnvContext.Provider value={env}>
       <Root
