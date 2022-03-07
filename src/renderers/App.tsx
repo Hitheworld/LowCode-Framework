@@ -52,6 +52,10 @@ function Page(props: any) {
     const link = e.currentTarget.getAttribute('href')!;
     // env.jumpTo(link);
     jumpTo(link);
+    dispatch({
+      type: AppActions.UPDATE_ACTIVE_PAGE,
+      payload: { env: props.env },
+    });
   };
 
   return (
@@ -62,6 +66,7 @@ function Page(props: any) {
           navigations={state.navigations}
           // isActive={(link: any) => !!env.isCurrentUrl(link?.path, link)}
           isActive={(link: any) => isCurrentUrl(link?.path, link)}
+          loading={initLoading}
           path={props.location.location.pathname}
           onNavClick={handleNavClick}
         />

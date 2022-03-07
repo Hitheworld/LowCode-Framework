@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useContext,
-  useReducer,
-  Dispatch,
-} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import cx from 'classnames';
 import { Layout, Menu, Skeleton } from 'antd';
 import {
@@ -14,8 +8,6 @@ import {
   TeamOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { AppActions } from '@/store/app';
-import { updateLocation, jumpTo, isCurrentUrl } from '@/utils/appUtils';
 import { mapTree } from '@/utils/helper';
 import { RootStoreContext } from '@/store';
 
@@ -23,7 +15,7 @@ const { Sider } = Layout;
 const { SubMenu } = Menu;
 
 function AsideNav(props: any) {
-  const { logo, onNavClick } = props;
+  const { logo, onNavClick, loading, path } = props;
 
   console.log('AsideNav-props:', props?.isActive());
 
@@ -61,7 +53,7 @@ function AsideNav(props: any) {
 
   // 展开与收缩
   const [collapsed, setCollapsed] = useState<boolean>(false);
-  const onCollapse = (is: boolean) => {
+  const handleCollapse = (is: boolean) => {
     setCollapsed(is);
   };
 
@@ -103,32 +95,37 @@ function AsideNav(props: any) {
     }
   };
 
+  const currentItem = navigations?.filter((o) => o?.path === path)[0];
+  console.log('AsideNav=currentItem数据是:', currentItem);
+  console.log('AsideNav=path数据是:', path);
+
   console.log('navigations数据是:', navigations);
 
   return (
-    <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
+    <Sider collapsible collapsed={collapsed} onCollapse={handleCollapse}>
       <div className="logo">{logo}</div>
-
-      <div style={{ padding: 24 }}>
-        <Skeleton
-          active
-          title={false}
-          paragraph={{
-            rows: 6,
-          }}
-        />
-      </div>
-
-      <Menu
-        theme="dark"
-        defaultOpenKeys={[props.path]}
-        defaultSelectedKeys={[props.path]}
-        mode="inline"
-      >
-        {Array.isArray(navigations)
-          ? navigations?.map((item, index) => itemRender(item, index))
-          : null}
-      </Menu>
+      {loading ? (
+        <div style={{ padding: 24 }}>
+          <Skeleton
+            active
+            title={false}
+            paragraph={{
+              rows: 6,
+            }}
+          />
+        </div>
+      ) : (
+        <Menu
+          theme="dark"
+          defaultOpenKeys={[path]}
+          defaultSelectedKeys={[path]}
+          mode="inline"
+        >
+          {Array.isArray(navigations)
+            ? navigations?.map((item, index) => itemRender(item, index))
+            : null}
+        </Menu>
+      )}
     </Sider>
   );
 }
