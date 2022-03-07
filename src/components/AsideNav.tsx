@@ -23,8 +23,6 @@ function AsideNav(props: any) {
   const [state, dispatch] = useContext(RootStoreContext);
 
   const [navigations, setNavigations] = useState<AsideNav.LinkItemProps[]>([]);
-
-  const [currentId, setCurrentId] = useState('');
   const [bcnIds, setBcnIds] = useState([]);
   useEffect(() => {
     if (props.navigations?.length) {
@@ -86,7 +84,6 @@ function AsideNav(props: any) {
 
       const _ids = bcn?.filter((o) => o?.id)?.map((o) => o?.id?.toString());
       setBcnIds(_ids);
-      setCurrentId(page?.id);
       setNavigations(_list);
     }
   }, [props.navigations]);
@@ -154,11 +151,11 @@ function AsideNav(props: any) {
             }}
           />
         </div>
-      ) : navigations?.length && currentId ? (
+      ) : navigations?.length ? (
         <Menu
           theme="dark"
           defaultOpenKeys={bcnIds}
-          defaultSelectedKeys={bcnIds}
+          defaultSelectedKeys={bcnIds[bcnIds?.length - 1]}
           mode="inline"
         >
           {Array.isArray(navigations)
