@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { Layout, Menu, Breadcrumb, Spin } from 'antd';
 import { AppActions } from '@/store/app';
 import { Renderer, EnvContext } from '@/factory';
 import { useRequest } from '@/hooks/useRequest';
 import AsideNav from '@/components/AsideNav';
 import NotFound from '@/components/NotFound';
-import { isCurrentUrl } from '@/utils/appUtils';
+import { updateLocation, jumpTo, isCurrentUrl } from '@/utils/appUtils';
 import { RootStoreContext } from '@/store';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -32,19 +32,27 @@ function Page(props: any) {
     }
   }, [initData]);
 
-  useEffect(() => {
-    if (state.pages?.length) {
-      dispatch({
-        type: AppActions.UPDATE_ACTIVE_PAGE,
-        payload: { pages: initData?.pages, env: props.env },
-      });
-    }
-  }, [state.pages]);
+  // useEffect(() => {
+  //   if (state.pages?.length) {
+  //     dispatch({
+  //       type: AppActions.UPDATE_ACTIVE_PAGE,
+  //       payload: { pages: initData?.pages, env: props.env },
+  //     });
+  //   }
+  // }, [state.pages]);
 
   useEffect(() => {
     console.log('useEffect-pages:', props.location.location.pathname);
   }, [props.location.location.pathname]);
   console.log('location-pages:', props.location.location.pathname);
+
+  // 页面跳转
+  const handleNavClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const link = e.currentTarget.getAttribute('href')!;
+    // env.jumpTo(link);
+    jumpTo(link);
+  };
 
   return (
     <>
@@ -55,7 +63,7 @@ function Page(props: any) {
           // isActive={(link: any) => !!env.isCurrentUrl(link?.path, link)}
           isActive={(link: any) => isCurrentUrl(link?.path, link)}
           path={props.location.location.pathname}
-          env={env}
+          onNavClick={handleNavClick}
         />
 
         <Layout className="site-layout">
@@ -98,6 +106,11 @@ function Page(props: any) {
               ) : state.pages && !state.activePage ? (
                 <NotFound />
               ) : null}
+
+              <div className="main-loging">
+                <Spin spinning={initLoading} />
+              </div>
+
               {asideAfter ? render('aside-before', asideAfter) : null}
             </div>
           </Content>

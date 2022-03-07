@@ -23,7 +23,7 @@ const { Sider } = Layout;
 const { SubMenu } = Menu;
 
 function AsideNav(props: any) {
-  const { logo, env } = props;
+  const { logo, onNavClick } = props;
 
   console.log('AsideNav-props:', props?.isActive());
 
@@ -59,42 +59,7 @@ function AsideNav(props: any) {
     }
   }, [props.navigations]);
 
-  const [currMenuItem, setCurrMenuItem] =
-    useState<AsideNav.LinkItemProps | null>(null);
-
-  // 中转页面
-  const handleNavClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const link = e.currentTarget.getAttribute('href')!;
-    // env.jumpTo(link);
-    jumpTo(link);
-  };
-
-  const toggleExpand = (
-    item: AsideNav.LinkItemProps,
-    e?: React.MouseEvent<HTMLElement>
-  ) => {
-    if (e) {
-      // e.stopPropagation();
-      e.preventDefault();
-    }
-
-    const link = e.currentTarget.getAttribute('href')!;
-    // env.jumpTo(link);
-    jumpTo(link);
-    setNavigations(
-      mapTree(
-        navigations,
-        (item: Navigation) => ({
-          ...item,
-          open: link.id === item.id ? !item.open : item.open,
-        }),
-        1,
-        true
-      )
-    );
-  };
-
+  // 展开与收缩
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const onCollapse = (is: boolean) => {
     setCollapsed(is);
@@ -115,35 +80,20 @@ function AsideNav(props: any) {
     } else {
       return (
         <Menu.Item key={item?.path} icon={<PieChartOutlined />}>
-          {item.path ? (
-            /^https?\:/.test(item.path) ? (
-              <a
-                style={{ display: 'block' }}
-                target="_blank"
-                href={item.path}
-                rel="noopener"
-              >
-                {item?.label}
-              </a>
-            ) : (
-              <a
-                style={{ display: 'block' }}
-                onClick={(e: React.MouseEvent<HTMLElement>) =>
-                  toggleExpand(item, e)
-                }
-                href={item?.path || item?.children?.[0]?.path}
-              >
-                {item?.label}
-              </a>
-            )
+          {/^https?\:/.test(item.path) ? (
+            <a
+              style={{ display: 'block' }}
+              target="_blank"
+              href={item.path}
+              rel="noopener"
+            >
+              {item?.label}
+            </a>
           ) : (
             <a
               style={{ display: 'block' }}
-              onClick={
-                item.children
-                  ? (e: React.MouseEvent<HTMLElement>) => toggleExpand(item, e)
-                  : undefined
-              }
+              onClick={onNavClick}
+              href={item?.path || item?.children?.[0]?.path}
             >
               {item?.label}
             </a>
