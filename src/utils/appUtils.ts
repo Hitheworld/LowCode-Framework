@@ -36,32 +36,26 @@ export const jumpTo = (to: string, action?: Types.Action) => {
   }
   to = normalizeLink(to, history.location);
   if (isCurrentUrl(to)) {
-    console.log('通过-001');
     return;
   }
   if (action?.actionType === 'url') {
-    console.log('通过-002');
     action.blank === false
       ? (window.location.href = to)
       : window.open(to, '_blank');
     return;
   } else if (action?.blank) {
-    console.log('通过-003');
     window.open(to, '_blank');
     return;
   }
   if (/^https?:\/\//.test(to)) {
-    console.log('通过-004');
     window.location.href = to;
   } else if (
     (!/^https?\:\/\//.test(to) &&
       to === history.pathname + history.location.search) ||
     to === history.location.href
   ) {
-    console.log('通过-005');
     // do nothing
   } else {
-    console.log('通过-006');
     history.push(to);
   }
 };
