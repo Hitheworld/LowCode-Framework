@@ -158,7 +158,7 @@ function AsideNav(props: any) {
         <Menu
           theme="dark"
           defaultOpenKeys={bcnIds}
-          defaultSelectedKeys={[currentId]}
+          defaultSelectedKeys={bcnIds}
           mode="inline"
         >
           {Array.isArray(navigations)
