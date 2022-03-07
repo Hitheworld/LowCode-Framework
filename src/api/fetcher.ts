@@ -170,8 +170,6 @@ export async function fetcherApi(env: Env.RendererEnv, api: any) {
     return true;
   };
 
-  console.log('请求config:', _config);
-
   let response = await axios(_config);
   response = await attachmentAdpator(response);
   response = responseAdaptor(env, api, response);
@@ -197,7 +195,6 @@ export async function fetcherApi(env: Env.RendererEnv, api: any) {
       throw new Error(`接口出错，状态码是 ${response.status}`);
     }
   }
-  console.log('请求response:', response);
   return response;
   // return new Promise(function (resolve, reject) {
   //   reject(response);

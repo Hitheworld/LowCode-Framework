@@ -330,12 +330,8 @@ export function wrapFetcher(
   options?: object
 ) => Promise<Types.Payload | void> {
   return function (api, data, options) {
-    console.log('wrapFetcher-api:', api);
     api = buildApi(api, data, options) as Types.ApiObject;
-    console.log('=========wrapFetcher-api:', api);
-
     api.requestAdaptor && (api = api.requestAdaptor(api) || api);
-
     if (api.data && (hasFile(api.data) || api.dataType === 'form-data')) {
       api.data =
         api.data instanceof FormData
