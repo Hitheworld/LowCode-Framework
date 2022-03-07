@@ -50,9 +50,6 @@ function setActivePage(
     }
     return false;
   });
-
-  console.log('app数据中心:', state);
-
   state.activePage = {
     ...page,
     params: params || {},

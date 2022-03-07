@@ -8,7 +8,8 @@ import {
   TeamOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { mapTree } from '@/utils/helper';
+import { mapTree, findTree } from '@/utils/helper';
+import { updateLocation, jumpTo, isCurrentUrl } from '@/utils/appUtils';
 import { RootStoreContext } from '@/store';
 
 const { Sider } = Layout;
@@ -95,11 +96,8 @@ function AsideNav(props: any) {
     }
   };
 
-  const currentItem = navigations?.filter((o) => o?.path === path)[0];
-  console.log('AsideNav=currentItem数据是:', currentItem);
-  console.log('AsideNav=path数据是:', path);
-
   console.log('navigations数据是:', navigations);
+  console.log('navigations数据是props.bcn:', props.bcn);
 
   return (
     <Sider collapsible collapsed={collapsed} onCollapse={handleCollapse}>

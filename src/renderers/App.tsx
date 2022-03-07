@@ -68,6 +68,7 @@ function Page(props: any) {
           isActive={(link: any) => isCurrentUrl(link?.path, link)}
           loading={initLoading}
           path={props.location.location.pathname}
+          bcn={state.bcn}
           onNavClick={handleNavClick}
         />
 
