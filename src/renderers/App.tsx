@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useContext, useReducer } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Layout, Menu, Breadcrumb } from 'antd';
-import { initialState, reducer } from '@/store/app';
 import { AppActions } from '@/store/app';
 import { Renderer, EnvContext } from '@/factory';
 import { useRequest } from '@/hooks/useRequest';
@@ -54,7 +53,8 @@ function Page(props: any) {
           logo="图标文件"
           navigations={state.navigations}
           // isActive={(link: any) => !!env.isCurrentUrl(link?.path, link)}
-          isActive={(link: any) => !!isCurrentUrl(link?.path, link)}
+          isActive={(link: any) => isCurrentUrl(link?.path, link)}
+          path={props.location.location.pathname}
           env={env}
         />
 

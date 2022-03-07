@@ -25,6 +25,8 @@ const { SubMenu } = Menu;
 function AsideNav(props: any) {
   const { logo, env } = props;
 
+  console.log('AsideNav-props:', props?.isActive());
+
   const [state, dispatch] = useContext(RootStoreContext);
 
   const [navigations, setNavigations] = useState<AsideNav.LinkItemProps[]>([]);
@@ -39,8 +41,12 @@ function AsideNav(props: any) {
               ? (props.isActive as Function)(item)
               : item.active;
 
+          const _path = item?.children?.length
+            ? item?.children?.[0]?.path
+            : item?.path;
           return {
             ...item,
+            path: _path,
             id: id++,
             active: isActive,
             open: isActive || props?.isOpen?.(item as AsideNav.LinkItemProps),
@@ -100,11 +106,7 @@ function AsideNav(props: any) {
       return null;
     } else if (Array.isArray(item?.children) && item?.children?.length) {
       return (
-        <SubMenu
-          key={`${index}-${depth}`}
-          icon={<UserOutlined />}
-          title={item?.label}
-        >
+        <SubMenu key={item?.path} icon={<UserOutlined />} title={item?.label}>
           {item?.children?.map((childItem, key) =>
             itemRender(childItem, `${index}-${key}`, depth + 1)
           )}
@@ -112,7 +114,7 @@ function AsideNav(props: any) {
       );
     } else {
       return (
-        <Menu.Item key={`${depth}-${index}`} icon={<PieChartOutlined />}>
+        <Menu.Item key={item?.path} icon={<PieChartOutlined />}>
           {item.path ? (
             /^https?\:/.test(item.path) ? (
               <a
@@ -151,6 +153,8 @@ function AsideNav(props: any) {
     }
   };
 
+  console.log('navigations数据是:', navigations);
+
   return (
     <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
       <div className="logo">{logo}</div>
@@ -165,7 +169,12 @@ function AsideNav(props: any) {
         />
       </div>
 
-      <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+      <Menu
+        theme="dark"
+        defaultOpenKeys={[props.path]}
+        defaultSelectedKeys={[props.path]}
+        mode="inline"
+      >
         {Array.isArray(navigations)
           ? navigations?.map((item, index) => itemRender(item, index))
           : null}
