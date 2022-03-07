@@ -23,6 +23,9 @@ function AsideNav(props: any) {
   const [state, dispatch] = useContext(RootStoreContext);
 
   const [navigations, setNavigations] = useState<AsideNav.LinkItemProps[]>([]);
+
+  const [currentId, setCurrentId] = useState('');
+  const [bcnIds, setBcnIds] = useState([]);
   useEffect(() => {
     if (props.navigations?.length) {
       let id = 1;
@@ -48,6 +51,42 @@ function AsideNav(props: any) {
         1,
         true
       );
+
+      let matched: any;
+      let page = findTree(_list, (item) => {
+        if (item.path) {
+          // matched = env.isCurrentUrl(item.path, item);
+          matched = isCurrentUrl(item.path, item);
+          if (matched) {
+            return true;
+          }
+        }
+        return false;
+      });
+
+      let bcn: Array<any> = [];
+      findTree(_list, (item, index, level, paths) => {
+        if (item.id === page.id) {
+          bcn = paths.filter((item) => item.path && item.label);
+          bcn.push({
+            ...item,
+            // path: '',
+          });
+          // state.__;
+          if (bcn[0].path !== '/') {
+            bcn.unshift({
+              label: '首页',
+              path: '/',
+            });
+          }
+          return true;
+        }
+        return false;
+      });
+
+      const _ids = bcn?.filter((o) => o?.id)?.map((o) => o?.id?.toString());
+      setBcnIds(_ids);
+      setCurrentId(page?.id);
       setNavigations(_list);
     }
   }, [props.navigations]);
@@ -64,7 +103,11 @@ function AsideNav(props: any) {
       return null;
     } else if (Array.isArray(item?.children) && item?.children?.length) {
       return (
-        <SubMenu key={item?.id + ''} icon={<UserOutlined />} title={item?.label}>
+        <SubMenu
+          key={item?.id + ''}
+          icon={<UserOutlined />}
+          title={item?.label}
+        >
           {item?.children?.map((childItem, key) =>
             itemRender(childItem, `${index}-${key}`, depth + 1)
           )}
@@ -96,43 +139,7 @@ function AsideNav(props: any) {
     }
   };
 
-  let matched: any;
-  let page = findTree(navigations, (item) => {
-    if (item.path) {
-      // matched = env.isCurrentUrl(item.path, item);
-      matched = isCurrentUrl(item.path, item);
-      if (matched) {
-        return true;
-      }
-    }
-    return false;
-  });
-
-  let bcn: Array<any> = [];
-  findTree(navigations, (item, index, level, paths) => {
-    if (item.id === page.id) {
-      bcn = paths.filter((item) => item.path && item.label);
-      bcn.push({
-        ...item,
-        // path: '',
-      });
-      // state.__;
-      if (bcn[0].path !== '/') {
-        bcn.unshift({
-          label: '首页',
-          path: '/',
-        });
-      }
-      return true;
-    }
-    return false;
-  });
-
   console.log('navigations数据是:', navigations);
-  console.log('navigations数据是page:', page);
-  console.log('navigations数据是props.bcn:', bcn);
-  const _ids = bcn?.filter((o) => o?.id)?.map((o) => o?.id?.toString());
-  console.log('navigations数据是_ids:', _ids);
 
   return (
     <Sider collapsible collapsed={collapsed} onCollapse={handleCollapse}>
@@ -147,18 +154,18 @@ function AsideNav(props: any) {
             }}
           />
         </div>
-      ) : (
+      ) : navigations?.length && currentId ? (
         <Menu
           theme="dark"
-          defaultOpenKeys={_ids}
-          defaultSelectedKeys={[page?.id]}
+          defaultOpenKeys={bcnIds}
+          defaultSelectedKeys={[currentId]}
           mode="inline"
         >
           {Array.isArray(navigations)
             ? navigations?.map((item, index) => itemRender(item, index))
             : null}
         </Menu>
-      )}
+      ) : null}
     </Sider>
   );
 }
