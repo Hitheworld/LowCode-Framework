@@ -14,12 +14,10 @@ export function useRequest(
     let didCancel: boolean = false;
     async function fetchInitData() {
       try {
-        console.log('useRequest-env:', env);
         setInitLoading(true);
         const json: any = await env?.fetcher(api, data, {
           ...options,
         });
-        console.log('useRequest-json:', json);
         if (!didCancel) {
           setInitLoading(false);
           setInitData(json?.data);

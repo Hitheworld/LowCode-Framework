@@ -210,7 +210,6 @@ const reducer = (state: AppStore.State, action: AppStore.IAction) => {
         return false;
       });
 
-      console.log('更新当前活动页面page:', page);
       if (page) {
         setActivePage(
           state,
@@ -226,7 +225,6 @@ const reducer = (state: AppStore.State, action: AppStore.IAction) => {
           state.activePage = null;
         }
       }
-      console.log('更新当前活动页面state:', state);
       return {
         ...state,
       };

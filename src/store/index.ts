@@ -15,13 +15,11 @@ function mergeModuls(modules: any, throwOut: string) {
   let multiple: any = {};
   for (const path in modules) {
     let module = modules[path].default;
-    console.log('module:', module);
-    console.log('module.name:', module.name);
     // multiple[throwOut] = module;
     // multiple[module.name] = module[throwOut];
     multiple = module;
   }
-  console.log('multiple:', multiple);
+  // console.log('multiple:', multiple);
   return multiple;
 }
 
@@ -37,8 +35,8 @@ function mergeModuls(modules: any, throwOut: string) {
 // 合并后的reduce
 let multipleReducer = mergeModuls(reduceModule, 'reducer');
 let multipleState = mergeModuls(stateModule, 'state');
-console.log('合并对象multipleReduce====', multipleReducer);
-console.log('合并对象multipleState====', multipleState);
+// console.log('合并对象multipleReduce====', multipleReducer);
+// console.log('合并对象multipleState====', multipleState);
 
 function combineReducers(reducers) {
   return function (state: any = {}, action: any) {
@@ -47,11 +45,6 @@ function combineReducers(reducers) {
       // const childState = state[key];
       // // 然后得到新的子状态，赋值给对应的key的新state里面
       // newState[key] = reducers[key](childState, action);
-
-      console.log('再将多个===key:', key);
-      console.log('再将多个===state:', state);
-      console.log('再将多个===newState:', newState);
-      console.log('再将多个===总:', reducers[key](state[key], action));
       newState[key] = reducers[key](state[key], action);
       return newState;
     }, {});

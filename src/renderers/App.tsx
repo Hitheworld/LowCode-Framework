@@ -14,8 +14,6 @@ const { SubMenu } = Menu;
 function Page(props: any) {
   const { asideBefore, asideAfter, render, env } = props;
 
-  console.log('App-props:', props);
-
   const [state, dispatch] = useContext(RootStoreContext);
 
   const { initLoading, initData } = useRequest(props?.api);
@@ -31,20 +29,6 @@ function Page(props: any) {
       });
     }
   }, [initData]);
-
-  // useEffect(() => {
-  //   if (state.pages?.length) {
-  //     dispatch({
-  //       type: AppActions.UPDATE_ACTIVE_PAGE,
-  //       payload: { pages: initData?.pages, env: props.env },
-  //     });
-  //   }
-  // }, [state.pages]);
-
-  useEffect(() => {
-    console.log('useEffect-pages:', props.location.location.pathname);
-  }, [props.location.location.pathname]);
-  console.log('location-pages:', props.location.location.pathname);
 
   // 页面跳转
   const handleNavClick = (e: React.MouseEvent) => {

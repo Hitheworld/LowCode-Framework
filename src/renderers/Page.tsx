@@ -123,12 +123,6 @@ function Page(props: any) {
     }
   };
 
-  console.log('Page-props:', props);
-  console.log(
-    'isArray:',
-    Array.isArray(regions) ? ~regions.indexOf('body') : body
-  );
-
   const subProps = {};
 
   const hasAside = Array.isArray(regions)

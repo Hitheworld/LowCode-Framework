@@ -74,9 +74,6 @@ export default function Root(props: Root.RootProps) {
   }
 
   const [state, dispatch] = useReducer(multipleReducer, multipleState);
-  console.log('新的reducer:', reducer);
-  console.log('新的state:', state);
-  console.log('新的multipleState:', multipleState);
 
   return (
     <RootStoreContext.Provider value={[state, dispatch]}>

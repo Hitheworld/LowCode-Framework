@@ -18,11 +18,9 @@ const { SubMenu } = Menu;
 function AsideNav(props: any) {
   const { logo, onNavClick, loading, path } = props;
 
-  console.log('AsideNav-props:', props?.isActive());
-
   const [state, dispatch] = useContext(RootStoreContext);
 
-  const [navigations, setNavigations] = useState<AsideNav.LinkItemProps[]>([]);
+  const [routes, setRoutes] = useState<AsideNav.LinkItemProps[]>([]);
   const [bcnIds, setBcnIds] = useState([]);
   useEffect(() => {
     if (props.navigations?.length) {
@@ -84,7 +82,7 @@ function AsideNav(props: any) {
 
       const _ids = bcn?.filter((o) => o?.id)?.map((o) => o?.id?.toString());
       setBcnIds(_ids);
-      setNavigations(_list);
+      setRoutes(_list);
     }
   }, [props.navigations]);
 
@@ -136,8 +134,6 @@ function AsideNav(props: any) {
     }
   };
 
-  console.log('navigations数据是:', navigations);
-
   return (
     <Sider collapsible collapsed={collapsed} onCollapse={handleCollapse}>
       <div className="logo">{logo}</div>
@@ -151,15 +147,15 @@ function AsideNav(props: any) {
             }}
           />
         </div>
-      ) : navigations?.length ? (
+      ) : routes?.length ? (
         <Menu
           theme="dark"
           defaultOpenKeys={bcnIds}
           defaultSelectedKeys={bcnIds[bcnIds?.length - 1]}
           mode="inline"
         >
-          {Array.isArray(navigations)
-            ? navigations?.map((item, index) => itemRender(item, index))
+          {Array.isArray(routes)
+            ? routes?.map((item, index) => itemRender(item, index))
             : null}
         </Menu>
       ) : null}
