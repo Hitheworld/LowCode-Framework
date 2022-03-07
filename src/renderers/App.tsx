@@ -18,7 +18,7 @@ function Page(props: any) {
   console.log('App-props:', props);
 
   // const [state, dispatch] = useReducer(reducer, initialState);
-  const { state, dispatch } = useContext(RootStoreContext);
+  const [state, dispatch] = useContext(RootStoreContext);
 
   const { initLoading, initData } = useRequest(props?.api);
   useEffect(() => {

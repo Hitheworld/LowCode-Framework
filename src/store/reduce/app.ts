@@ -72,7 +72,7 @@ function setActivePage(
     state.schemaKey = '' + Date.now();
   } else if (page.schemaApi) {
     state.schema = null;
-    state.fetchSchema(page.schemaApi, state.activePage, { method: 'get' });
+    // state.fetchSchema(page.schemaApi, state.activePage, { method: 'get' });
   } else if (page.redirect) {
     // env.jumpTo(page.redirect);
     jumpTo(page.redirect);
@@ -239,8 +239,6 @@ const reducer = (state: AppStore.State, action: AppStore.IAction) => {
     // 展开-变更
     case AppActions.TOGGLE_EXPAND:
       const navigations = getNavigations(action.payload.pages);
-      console.log('===app-navigations:', navigations);
-      console.log('===app-action.payload:', action.payload);
       const _navs = mapTree(
         navigations,
         (item: AsideNav.Navigation) => ({
@@ -250,7 +248,6 @@ const reducer = (state: AppStore.State, action: AppStore.IAction) => {
         1,
         true
       );
-      console.log('app-真navigations:', _navs);
       return {
         ...state,
         navigations: _navs,

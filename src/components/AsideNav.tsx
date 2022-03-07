@@ -18,15 +18,16 @@ import { initialState, reducer } from '@/store/app';
 import { AppActions } from '@/store/app';
 import { updateLocation, jumpTo, isCurrentUrl } from '@/utils/appUtils';
 import { mapTree } from '@/utils/helper';
+import { RootStoreContext } from '@/store';
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
 function AsideNav(props: any) {
   const { logo, env } = props;
-  console.log('AsideNav-props:', props);
 
-  const [state, dispatch] = useReducer(reducer, initialState);
+  // const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useContext(RootStoreContext);
 
   const [navigations, setNavigations] = useState<AsideNav.LinkItemProps[]>([]);
   useEffect(() => {
@@ -77,8 +78,6 @@ function AsideNav(props: any) {
     const link = e.currentTarget.getAttribute('href')!;
     // env.jumpTo(link);
     jumpTo(link);
-
-    console.log('展开了============', e, item);
     dispatch({
       type: AppActions.TOGGLE_EXPAND,
       payload: { id: item?.id, pages: navigations },

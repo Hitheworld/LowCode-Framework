@@ -79,7 +79,7 @@ export default function Root(props: Root.RootProps) {
   console.log('新的multipleState:', multipleState);
 
   return (
-    <RootStoreContext.Provider value={{ state, dispatch }}>
+    <RootStoreContext.Provider value={[state, dispatch]}>
       <RootRenderer
         pathPrefix={pathPrefix || ''}
         schema={
