@@ -55,7 +55,6 @@ function Dialog(props: Dialog.DialogProps) {
     };
 
     if (!(body as Types.Schema)?.type) {
-      console.log('dialog=====1', props);
       return render(`body${key ? `/${key}` : ''}`, body, subProps);
     }
 
