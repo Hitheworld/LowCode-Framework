@@ -14,7 +14,6 @@ import {
   TeamOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { initialState, reducer } from '@/store/app';
 import { AppActions } from '@/store/app';
 import { updateLocation, jumpTo, isCurrentUrl } from '@/utils/appUtils';
 import { mapTree } from '@/utils/helper';
@@ -26,7 +25,6 @@ const { SubMenu } = Menu;
 function AsideNav(props: any) {
   const { logo, env } = props;
 
-  // const [state, dispatch] = useReducer(reducer, initialState);
   const [state, dispatch] = useContext(RootStoreContext);
 
   const [navigations, setNavigations] = useState<AsideNav.LinkItemProps[]>([]);
@@ -78,10 +76,22 @@ function AsideNav(props: any) {
     const link = e.currentTarget.getAttribute('href')!;
     // env.jumpTo(link);
     jumpTo(link);
-    dispatch({
-      type: AppActions.TOGGLE_EXPAND,
-      payload: { id: item?.id, pages: navigations },
-    });
+    // dispatch({
+    //   type: AppActions.TOGGLE_EXPAND,
+    //   payload: { id: item?.id, pages: navigations },
+    // });
+
+    setNavigations(
+      mapTree(
+        navigations,
+        (item: Navigation) => ({
+          ...item,
+          open: link.id === item.id ? !item.open : item.open,
+        }),
+        1,
+        true
+      )
+    );
     // this.setState({
     //   navigations: mapTree(
     //     this.state.navigations,

@@ -62,6 +62,7 @@ function setActivePage(
     params: params || {},
     bcn,
   };
+  state.bcn = bcn;
 
   if (page.label) {
     document.title = page.label;

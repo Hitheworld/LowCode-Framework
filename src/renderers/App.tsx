@@ -17,7 +17,6 @@ function Page(props: any) {
 
   console.log('App-props:', props);
 
-  // const [state, dispatch] = useReducer(reducer, initialState);
   const [state, dispatch] = useContext(RootStoreContext);
 
   const { initLoading, initData } = useRequest(props?.api);
@@ -70,11 +69,14 @@ function Page(props: any) {
             </Menu>
           </Header>
           <Content style={{ padding: '0 50px' }}>
-            <Breadcrumb style={{ margin: '16px 0' }}>
-              {state.navigations?.map((item, index) => (
-                <Breadcrumb.Item key={index}>{item?.label}</Breadcrumb.Item>
-              ))}
-            </Breadcrumb>
+            {state.bcn.length ? (
+              <Breadcrumb style={{ margin: '16px 0' }}>
+                {state.bcn?.map((item, index) => (
+                  <Breadcrumb.Item key={index}>{item?.label}</Breadcrumb.Item>
+                ))}
+              </Breadcrumb>
+            ) : null}
+
             <div className="site-layout-content">
               {asideBefore ? render('aside-before', asideBefore) : null}
               <div>App页面</div>
