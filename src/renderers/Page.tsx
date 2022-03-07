@@ -3,6 +3,7 @@ import cx from 'classnames';
 import { Layout, Menu, Breadcrumb, Modal } from 'antd';
 import { Renderer } from '@/factory';
 import { isVisible, bulkBindFunctions } from '@/utils/helper';
+import { RootStoreContext } from '@/store';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -39,6 +40,8 @@ function Page(props: any) {
     value,
     defaultValue,
   } = props;
+
+  const [state, dispatch] = useContext(RootStoreContext);
 
   // Dislog
   const handleDialogConfirm = (
@@ -159,10 +162,19 @@ function Page(props: any) {
           ) : null}
 
           <Content style={{ margin: '0 16px' }}>
-            <Breadcrumb style={{ margin: '16px 0' }}>
-              <Breadcrumb.Item>User</Breadcrumb.Item>
-              <Breadcrumb.Item>Bill</Breadcrumb.Item>
-            </Breadcrumb>
+            {state.bcn?.length ? (
+              <Breadcrumb style={{ margin: '16px 0' }}>
+                {state.bcn?.map((item) => (
+                  <Breadcrumb.Item key={item?.path}>
+                    {state.bcn?.indexOf(item) === state.bcn?.length - 1 ? (
+                      item?.label
+                    ) : (
+                      <a href={item?.path}>{item?.label}</a>
+                    )}
+                  </Breadcrumb.Item>
+                ))}
+              </Breadcrumb>
+            ) : null}
 
             {(
               Array.isArray(regions)

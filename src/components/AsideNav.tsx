@@ -76,11 +76,6 @@ function AsideNav(props: any) {
     const link = e.currentTarget.getAttribute('href')!;
     // env.jumpTo(link);
     jumpTo(link);
-    // dispatch({
-    //   type: AppActions.TOGGLE_EXPAND,
-    //   payload: { id: item?.id, pages: navigations },
-    // });
-
     setNavigations(
       mapTree(
         navigations,
@@ -92,17 +87,6 @@ function AsideNav(props: any) {
         true
       )
     );
-    // this.setState({
-    //   navigations: mapTree(
-    //     this.state.navigations,
-    //     (item: Navigation) => ({
-    //       ...item,
-    //       open: link.id === item.id ? !item.open : item.open
-    //     }),
-    //     1,
-    //     true
-    //   )
-    // });
   };
 
   const [collapsed, setCollapsed] = useState<boolean>(false);
@@ -111,7 +95,7 @@ function AsideNav(props: any) {
   };
 
   // 子目录
-  const renderItem = (item: Nav.Link, index: number, depth = 1) => {
+  const itemRender = (item: Nav.Link, index: number, depth = 1) => {
     if (item?.visible === false) {
       return null;
     } else if (Array.isArray(item?.children) && item?.children?.length) {
@@ -122,7 +106,7 @@ function AsideNav(props: any) {
           title={item?.label}
         >
           {item?.children?.map((childItem, key) =>
-            renderItem(childItem, `${index}-${key}`, depth + 1)
+            itemRender(childItem, `${index}-${key}`, depth + 1)
           )}
         </SubMenu>
       );
@@ -167,8 +151,6 @@ function AsideNav(props: any) {
     }
   };
 
-  console.log('AsideNav==state:', state);
-
   return (
     <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
       <div className="logo">{logo}</div>
@@ -185,7 +167,7 @@ function AsideNav(props: any) {
 
       <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
         {Array.isArray(navigations)
-          ? navigations?.map((item, index) => renderItem(item, index))
+          ? navigations?.map((item, index) => itemRender(item, index))
           : null}
       </Menu>
     </Sider>

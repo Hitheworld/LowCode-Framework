@@ -4,7 +4,6 @@ import { updateLocation, jumpTo, isCurrentUrl } from '@/utils/appUtils';
 export enum AppActions {
   SET_PAGES = 'setPages',
   UPDATE_ACTIVE_PAGE = 'updateActivePage',
-  TOGGLE_EXPAND = 'toggleExpand',
 }
 
 function rewrite(state: AppStore.State, to: string, env: Env.RendererEnv) {
@@ -28,7 +27,6 @@ function setActivePage(
 ) {
   // 同一个页面直接返回。
   if (state.activePage?.id === page.id) {
-    console.log('同一个页面直接返回:', state);
     return {
       ...state,
     };
@@ -48,10 +46,8 @@ function setActivePage(
           path: '/',
         });
       }
-      console.log('app数据中心T:', state);
       return true;
     }
-    console.log('app数据中心F:', state);
     return false;
   });
 
@@ -236,22 +232,6 @@ const reducer = (state: AppStore.State, action: AppStore.IAction) => {
       console.log('更新当前活动页面state:', state);
       return {
         ...state,
-      };
-    // 展开-变更
-    case AppActions.TOGGLE_EXPAND:
-      const navigations = getNavigations(action.payload.pages);
-      const _navs = mapTree(
-        navigations,
-        (item: AsideNav.Navigation) => ({
-          ...item,
-          open: action.payload.id === item.id ? !item.open : item.open,
-        }),
-        1,
-        true
-      );
-      return {
-        ...state,
-        navigations: _navs,
       };
     default:
       throw new Error('unknown type');

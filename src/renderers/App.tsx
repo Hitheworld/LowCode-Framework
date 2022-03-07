@@ -69,10 +69,16 @@ function Page(props: any) {
             </Menu>
           </Header>
           <Content style={{ padding: '0 50px' }}>
-            {state.bcn.length ? (
+            {state.bcn?.length ? (
               <Breadcrumb style={{ margin: '16px 0' }}>
-                {state.bcn?.map((item, index) => (
-                  <Breadcrumb.Item key={index}>{item?.label}</Breadcrumb.Item>
+                {state.bcn?.map((item) => (
+                  <Breadcrumb.Item key={item?.path}>
+                    {state.bcn?.indexOf(item) === state.bcn?.length - 1 ? (
+                      item?.label
+                    ) : (
+                      <a href={item?.path}>{item?.label}</a>
+                    )}
+                  </Breadcrumb.Item>
                 ))}
               </Breadcrumb>
             ) : null}
