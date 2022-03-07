@@ -64,7 +64,7 @@ function AsideNav(props: any) {
       return null;
     } else if (Array.isArray(item?.children) && item?.children?.length) {
       return (
-        <SubMenu key={item?.path} icon={<UserOutlined />} title={item?.label}>
+        <SubMenu key={item?.id + ''} icon={<UserOutlined />} title={item?.label}>
           {item?.children?.map((childItem, key) =>
             itemRender(childItem, `${index}-${key}`, depth + 1)
           )}
@@ -72,7 +72,7 @@ function AsideNav(props: any) {
       );
     } else {
       return (
-        <Menu.Item key={item?.path} icon={<PieChartOutlined />}>
+        <Menu.Item key={item?.id + ''} icon={<PieChartOutlined />}>
           {/^https?\:/.test(item.path) ? (
             <a
               style={{ display: 'block' }}
@@ -96,8 +96,43 @@ function AsideNav(props: any) {
     }
   };
 
+  let matched: any;
+  let page = findTree(navigations, (item) => {
+    if (item.path) {
+      // matched = env.isCurrentUrl(item.path, item);
+      matched = isCurrentUrl(item.path, item);
+      if (matched) {
+        return true;
+      }
+    }
+    return false;
+  });
+
+  let bcn: Array<any> = [];
+  findTree(navigations, (item, index, level, paths) => {
+    if (item.id === page.id) {
+      bcn = paths.filter((item) => item.path && item.label);
+      bcn.push({
+        ...item,
+        // path: '',
+      });
+      // state.__;
+      if (bcn[0].path !== '/') {
+        bcn.unshift({
+          label: '首页',
+          path: '/',
+        });
+      }
+      return true;
+    }
+    return false;
+  });
+
   console.log('navigations数据是:', navigations);
-  console.log('navigations数据是props.bcn:', props.bcn);
+  console.log('navigations数据是page:', page);
+  console.log('navigations数据是props.bcn:', bcn);
+  const _ids = bcn?.filter((o) => o?.id)?.map((o) => o?.id?.toString());
+  console.log('navigations数据是_ids:', _ids);
 
   return (
     <Sider collapsible collapsed={collapsed} onCollapse={handleCollapse}>
@@ -115,8 +150,8 @@ function AsideNav(props: any) {
       ) : (
         <Menu
           theme="dark"
-          defaultOpenKeys={[path]}
-          defaultSelectedKeys={[path]}
+          defaultOpenKeys={_ids}
+          defaultSelectedKeys={[page?.id]}
           mode="inline"
         >
           {Array.isArray(navigations)
