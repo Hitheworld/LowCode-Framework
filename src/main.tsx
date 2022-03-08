@@ -18,6 +18,8 @@ import '@/renderers/Dialog';
 import '@/renderers/Drawer';
 import '@/renderers/Remark';
 import '@/renderers/Action';
+import '@/renderers/Table';
+import '@/renderers/Form';
 
 // 临时解决 antd "findDOMNode" 问题,生产环境不影响
 // eslint-disable-next-line

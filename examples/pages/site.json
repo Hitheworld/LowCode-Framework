@@ -26,7 +26,28 @@
                 "schema": {
                   "type": "page",
                   "title": "页面A-1",
-                  "body": "页面A-1"
+                  "body": [
+                    {
+                      "type": "tpl",
+                      "tpl": "页面A-1"
+                    },
+                    {
+                      "type": "form",
+                      "api": "/amis/api/mock2/form/saveForm",
+                      "body": [
+                        {
+                          "type": "input-text",
+                          "name": "name",
+                          "label": "姓名："
+                        },
+                        {
+                          "name": "email",
+                          "type": "input-email",
+                          "label": "邮箱："
+                        }
+                      ]
+                    }
+                  ]
                 }
               },
               {
@@ -35,7 +56,33 @@
                 "schema": {
                   "type": "page",
                   "title": "页面A-2",
-                  "body": "页面A-2"
+                  "body": [
+                    {
+                      "type": "tpl",
+                      "tpl": "页面A-2"
+                    },
+                    {
+                      "type": "service",
+                      "api": "/amis/api/mock2/sample?perPage=5",
+                      "body": [
+                        {
+                          "type": "table",
+                          "title": "表格1",
+                          "source": "$rows",
+                          "columns": [
+                            {
+                              "name": "engine",
+                              "label": "Engine"
+                            },
+                            {
+                              "name": "version",
+                              "label": "Version"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
                 }
               },
               {
