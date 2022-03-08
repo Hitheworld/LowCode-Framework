@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext, useReducer } from 'react';
 import cx from 'classnames';
-import { Table } from 'antd';
 import { Renderer } from '@/factory';
 // import { isApiOutdated, isEffectiveApi } from '@/utils/api';
 import { isVisible, bulkBindFunctions } from '@/utils/helper';
@@ -110,14 +109,14 @@ function ServiceRenderer(props: Service.ServiceProps) {
     <>
       <div>{/*  错误提示 */}</div>
       <div className="Service-body">
-        {
+        {/* {
           render('body', state.schema || schema, {
             key: state.schemaKey || 'body',
             onQuery: handleQuery,
             onAction: handleAction,
             onChange: handleChange,
           }) as JSX.Element
-        }
+        } */}
       </div>
     </>
   );
