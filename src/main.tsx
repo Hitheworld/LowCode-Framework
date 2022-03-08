@@ -18,6 +18,7 @@ import '@/renderers/Dialog';
 import '@/renderers/Drawer';
 import '@/renderers/Remark';
 import '@/renderers/Action';
+import '@/renderers/Service';
 import '@/renderers/Table';
 import '@/renderers/Form';
 
