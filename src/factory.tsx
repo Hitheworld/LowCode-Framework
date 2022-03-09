@@ -6,6 +6,22 @@ import { wrapFetcher } from './api/fetcherUtils';
 import { findIndex, string2regExp } from '@/utils/helper';
 // import { HocStoreFactory } from './HocStoreFactory';
 
+const schemaFilters: Array<Render.RenderSchemaFilter> = [];
+export function addSchemaFilter(fn: Render.RenderSchemaFilter) {
+  schemaFilters.push(fn);
+}
+
+export function filterSchema(
+  schema: Schema.Schema,
+  render: Render.RendererConfig,
+  props?: any
+) {
+  return schemaFilters.reduce(
+    (schema, filter) => filter(schema, render, props),
+    schema
+  ) as SchemaSchema;
+}
+
 let anonymousIndex = 1;
 const rendererNames: Array<string> = [];
 const renderers: Array<Renderer.RendererConfig> = [];
