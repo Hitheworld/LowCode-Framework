@@ -102,6 +102,10 @@ export function SchemaRenderer(props: SchemaRenderer.SchemaRendererProps) {
     ...restSchema
   } = schema;
 
+  if (Array.isArray(schema)) {
+    return renderChildren($path, schema as any, rest) as JSX.Element;
+  }
+
   const detectData =
     schema &&
     (schema.detectField === '&' ? rest : rest[schema.detectField || 'data']);
@@ -120,6 +124,51 @@ export function SchemaRenderer(props: SchemaRenderer.SchemaRendererProps) {
       rest.visible === false)
   ) {
     (rest as any).invisible = true;
+  }
+
+  const refFn = useRef(null);
+  if (schema.children) {
+    return rest.invisible
+      ? null
+      : React.isValidElement(schema.children)
+      ? schema.children
+      : (schema.children as Function)({
+          ...rest,
+          ...exprProps,
+          $path: $path,
+          $schema: schema,
+          render: currRenderChild,
+          forwardedRef: refFn.current,
+        });
+  }
+
+  // if (typeof schema.component === 'function') {
+  //   const isSFC = !(schema.component.prototype instanceof React.Component);
+  //   // const {
+  //   //   data: defaultData,
+  //   //   value: defaultValue,
+  //   //   activeKey: defaultActiveKey,
+  //   //   ...restSchema
+  //   // } = schema;
+  //   return rest.invisible
+  //     ? null
+  //     : React.createElement(schema.component as any, {
+  //         ...rest,
+  //         ...restSchema,
+  //         ...exprProps,
+  //         defaultData,
+  //         defaultValue,
+  //         defaultActiveKey,
+  //         $path: $path,
+  //         $schema: schema,
+  //         ref: isSFC ? undefined : refFn.current,
+  //         forwardedRef: isSFC ? refFn.current : undefined,
+  //         render: currRenderChild,
+  //       });
+  // }
+
+  if (Object.keys(schema).length === 0) {
+    return null;
   }
 
   if (!renderer.current) {
