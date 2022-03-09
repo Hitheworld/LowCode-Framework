@@ -19,7 +19,7 @@ export function filterSchema(
   return schemaFilters.reduce(
     (schema, filter) => filter(schema, render, props),
     schema
-  ) as SchemaSchema;
+  ) as Schema.Schema;
 }
 
 let anonymousIndex = 1;

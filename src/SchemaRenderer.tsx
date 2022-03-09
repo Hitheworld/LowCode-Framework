@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import omit from 'lodash/omit';
-import { loadRenderer, resolveRenderer } from '@/factory';
+import { loadRenderer, resolveRenderer, filterSchema } from '@/factory';
 import { renderChild, renderChildren } from '@/Root';
 import getExprProperties from '@/utils/filter-schema';
 import LazyComponent from '@/components/LazyComponent';
@@ -193,14 +193,42 @@ export function SchemaRenderer(props: SchemaRenderer.SchemaRendererProps) {
     );
   }
 
+  schema = filterSchema(schema, renderer, rest);
+  // const {
+  //   data: defaultData,
+  //   value: defaultValue,
+  //   activeKey: defaultActiveKey,
+  //   ...restSchema
+  // } = schema;
+
+  // 原来表单项的 visible: false 和 hidden: true 表单项的值和验证是有效的
+  // 而 visibleOn 和 hiddenOn 是无效的，
+  // 这个本来就是个bug，但是已经被广泛使用了
+  // 我只能继续实现这个bug了
+  if (
+    rest.invisible &&
+    (exprProps.hidden ||
+      exprProps.visible === false ||
+      !renderer.isFormItem ||
+      (schema.visible !== false && !schema.hidden))
+  ) {
+    return null;
+  }
+
   const Component = renderer.current?.component;
 
   return (
     <Component
       {...props}
       {...restSchema}
+      // {...chainEvents(rest, restSchema)}
+      {...exprProps}
+      defaultData={restSchema.defaultData ?? defaultData}
+      defaultValue={restSchema.defaultValue ?? defaultValue}
+      defaultActiveKey={defaultActiveKey}
       $path={$path}
-      $schema={{ ...schema }}
+      $schema={{ ...schema, ...exprProps }}
+      ref={refFn}
       render={currRenderChild}
     />
   );
