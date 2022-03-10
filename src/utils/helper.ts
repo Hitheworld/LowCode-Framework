@@ -590,3 +590,14 @@ export const bulkBindFunctions = function <
 >(context: T, funNames: Array<FunctionPropertyNames<T>>) {
   funNames.forEach((key) => (context[key] = context[key].bind(context)));
 };
+
+/**
+ * 判断是否为空
+ */
+export function isEmpty(thing: any) {
+  if (isObject(thing) && Object.keys(thing).length) {
+    return false;
+  }
+
+  return true;
+}
