@@ -109,14 +109,14 @@ function ServiceRenderer(props: Service.ServiceProps) {
     <>
       <div>{/*  错误提示 */}</div>
       <div className="Service-body">
-        {/* {
+        {
           render('body', state.schema || schema, {
             key: state.schemaKey || 'body',
             onQuery: handleQuery,
             onAction: handleAction,
             onChange: handleChange,
           }) as JSX.Element
-        } */}
+        }
       </div>
     </>
   );

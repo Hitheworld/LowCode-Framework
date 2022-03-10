@@ -12,25 +12,34 @@
       import { embed } from '/src/main.tsx';
       const schemas = {
         type: 'page',
-        aside: [
-          {
-            type: 'tpl',
-            tpl: '这是侧边栏部分',
-          },
-        ],
-        // toolbar: [
-        //   {
-        //     type: 'tpl',
-        //     tpl: '这是工具栏部分',
-        //   },
-        // ],
+        title: '页面A-2',
         body: [
           {
             type: 'tpl',
-            tpl: '<div>这是内容区</div>',
+            tpl: '页面A-2',
+          },
+          {
+            type: 'service',
+            api: '/amis/api/mock2/sample?perPage=5',
+            body: [
+              {
+                type: 'table',
+                title: '表格1',
+                source: '$rows',
+                columns: [
+                  {
+                    name: 'engine',
+                    label: 'Engine',
+                  },
+                  {
+                    name: 'version',
+                    label: 'Version',
+                  },
+                ],
+              },
+            ],
           },
         ],
-        // body: '这是内容区',
       };
       embed('#root', schemas, {}, null);
     </script>

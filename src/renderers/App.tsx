@@ -66,46 +66,42 @@ function Page(props: any) {
               })}
             </Menu>
           </Header>
-          <Content style={{ padding: '0 50px' }}>
-            {state.bcn?.length ? (
-              <Breadcrumb style={{ margin: '16px 0' }}>
-                {state.bcn?.map((item) => (
-                  <Breadcrumb.Item key={item?.path}>
-                    {state.bcn?.indexOf(item) === state.bcn?.length - 1 ? (
-                      item?.label
-                    ) : (
-                      <a href={item?.path}>{item?.label}</a>
-                    )}
-                  </Breadcrumb.Item>
-                ))}
-              </Breadcrumb>
-            ) : null}
-
-            <div className="site-layout-content">
-              {asideBefore ? render('aside-before', asideBefore) : null}
-              <div>App页面</div>
-              {state.activePage && state.schema ? (
-                <div>
-                  {render('page', state.schema, {
-                    key: `${state.activePage?.id}-${state.schemaKey}`,
-                    // data: createObject(self.data, {
-                    //   params: activePage?.params || {},
-                    // }),
-                  })}
-                </div>
-              ) : state.pages && !state.activePage ? (
-                <NotFound />
+          <Spin spinning={initLoading}>
+            <Content style={{ padding: '0 50px' }}>
+              {state.bcn?.length ? (
+                <Breadcrumb style={{ margin: '16px 0' }}>
+                  {state.bcn?.map((item) => (
+                    <Breadcrumb.Item key={item?.path}>
+                      {state.bcn?.indexOf(item) === state.bcn?.length - 1 ? (
+                        item?.label
+                      ) : (
+                        <a href={item?.path}>{item?.label}</a>
+                      )}
+                    </Breadcrumb.Item>
+                  ))}
+                </Breadcrumb>
               ) : null}
 
-              <div className="main-loging">
-                <Spin spinning={initLoading} />
+              <div className="site-layout-content">
+                {asideBefore ? render('aside-before', asideBefore) : null}
+                <div>App页面</div>
+                {state.activePage && state.schema ? (
+                  <div>
+                    {render('page', state.schema, {
+                      key: `${state.activePage?.id}-${state.schemaKey}`,
+                      // data: createObject(self.data, {
+                      //   params: activePage?.params || {},
+                      // }),
+                    })}
+                  </div>
+                ) : state.pages && !state.activePage ? (
+                  <NotFound />
+                ) : null}
               </div>
-
-              {asideAfter ? render('aside-before', asideAfter) : null}
-            </div>
-          </Content>
+            </Content>
+          </Spin>
           <Footer style={{ textAlign: 'center' }}>
-            Ant Design ©2018 Created by Ant UED
+            {asideAfter ? render('aside-before', asideAfter) : null}
           </Footer>
         </Layout>
       </Layout>
