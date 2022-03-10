@@ -95,7 +95,7 @@ function Page(props: any) {
                       }),
                     })}
                   </>
-                ) : state.pages && !state.activePage ? (
+                ) : state.pages && !state.activePage && !initLoading ? (
                   <NotFound />
                 ) : null}
               </div>
