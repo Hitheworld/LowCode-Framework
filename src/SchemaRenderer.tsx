@@ -47,6 +47,15 @@ export function SchemaRenderer(props: SchemaRenderer.SchemaRendererProps) {
     let schema = props.schema;
     let path = props.$path;
 
+    if (schema && schema.$ref) {
+      schema = {
+        ...props.resolveDefinitions(schema.$ref),
+        ...schema
+      };
+
+      path = path.replace(/(?!.*\/).*/, schema.type);
+    }
+
     if (
       schema?.type &&
       (skipResolve ||
@@ -59,11 +68,7 @@ export function SchemaRenderer(props: SchemaRenderer.SchemaRendererProps) {
     } else {
       // 自定义组件如果在节点设置了 label name 什么的，就用 formItem 包一层
       // 至少自动支持了 valdiations, label, description 等逻辑。
-      if (
-        schema.children &&
-        !schema.component
-        && schema.asFormItem
-      ) {
+      if (schema.children && !schema.component && schema.asFormItem) {
         schema.component = PlaceholderComponent;
         schema.renderChildren = schema.children;
         delete schema.children;
@@ -111,7 +116,6 @@ export function SchemaRenderer(props: SchemaRenderer.SchemaRendererProps) {
 
     return renderChild(`${$path}${region ? `/${region}` : ''}`, node || '', {
       ...omit(rest, omitList),
-      // ...rest,
       ...subProps,
       data: subProps.data || rest.data,
       env: env,
