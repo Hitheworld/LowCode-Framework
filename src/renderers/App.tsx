@@ -86,14 +86,14 @@ function Page(props: any) {
                 {asideBefore ? render('aside-before', asideBefore) : null}
                 <div>App页面</div>
                 {state.activePage && state.schema ? (
-                  <div>
+                  <>
                     {render('page', state.schema, {
                       key: `${state.activePage?.id}-${state.schemaKey}`,
                       // data: createObject(self.data, {
                       //   params: activePage?.params || {},
                       // }),
                     })}
-                  </div>
+                  </>
                 ) : state.pages && !state.activePage ? (
                   <NotFound />
                 ) : null}
