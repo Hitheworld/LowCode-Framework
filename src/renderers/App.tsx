@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Layout, Menu, Breadcrumb, Spin } from 'antd';
-import { AppActions } from '@/store/reduce/app';
+import { AppActions } from '@/store/constants';
 import { Renderer, EnvContext } from '@/factory';
 import { useRequest } from '@/hooks/useRequest';
 import AsideNav from '@/components/AsideNav';

@@ -2,6 +2,7 @@ import isPlainObject from 'lodash/isPlainObject';
 import { useState, useRef, useEffect, useReducer } from 'react';
 import { SchemaRenderer } from './SchemaRenderer';
 import { RootRenderer } from './RootRenderer';
+import { isEmpty} from '@/utils/helper';
 import {
   RootStoreContext,
   combineReducers,

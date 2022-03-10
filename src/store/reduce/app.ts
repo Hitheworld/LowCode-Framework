@@ -1,10 +1,6 @@
 import { mapTree, findTree, guid } from '@/utils/helper';
 import { updateLocation, jumpTo, isCurrentUrl } from '@/utils/appUtils';
-
-export enum AppActions {
-  SET_PAGES = 'setPages',
-  UPDATE_ACTIVE_PAGE = 'updateActivePage',
-}
+import { AppActions } from '@/store/constants';
 
 function rewrite(state: AppStore.State, to: string, env: Env.RendererEnv) {
   let page = findTree(state.pages, (item) => {
