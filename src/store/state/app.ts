@@ -1,4 +1,5 @@
 export default {
+  data: {},
   pages: [] || null,
   schema: null,
   schemaKey: '',

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Layout, Menu, Breadcrumb, Spin } from 'antd';
 import { AppActions } from '@/store/constants';
 import { Renderer, EnvContext } from '@/factory';
+import { createObject } from '@/utils/helper';
 import { useRequest } from '@/hooks/useRequest';
 import AsideNav from '@/components/AsideNav';
 import NotFound from '@/components/NotFound';
@@ -89,9 +90,9 @@ function Page(props: any) {
                   <>
                     {render('page', state.schema, {
                       key: `${state.activePage?.id}-${state.schemaKey}`,
-                      // data: createObject(self.data, {
-                      //   params: activePage?.params || {},
-                      // }),
+                      data: createObject(state.data, {
+                        params: state.activePage?.params || {},
+                      }),
                     })}
                   </>
                 ) : state.pages && !state.activePage ? (
