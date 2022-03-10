@@ -30,6 +30,8 @@ const defaultOmitList = [
   'body',
 ];
 
+const componentCache: SimpleMap = new SimpleMap();
+
 // 占位符组件 - 防止报错
 function PlaceholderComponent(props: any) {
   const { renderChildren, ...rest } = props;
@@ -50,7 +52,7 @@ export function SchemaRenderer(props: SchemaRenderer.SchemaRendererProps) {
     if (schema && schema.$ref) {
       schema = {
         ...props.resolveDefinitions(schema.$ref),
-        ...schema
+        ...schema,
       };
 
       path = path.replace(/(?!.*\/).*/, schema.type);
