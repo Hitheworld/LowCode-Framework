@@ -62,7 +62,7 @@ function AsideNav(props: any) {
 
       let bcn: Array<any> = [];
       findTree(_list, (item, index, level, paths) => {
-        if (item.id === page.id) {
+        if (item.id === page?.id) {
           bcn = paths.filter((item) => item.path && item.label);
           bcn.push({
             ...item,
