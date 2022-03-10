@@ -53,10 +53,10 @@ export function SchemaRenderer(props: SchemaRenderer.SchemaRendererProps) {
       // 自定义组件如果在节点设置了 label name 什么的，就用 formItem 包一层
       // 至少自动支持了 valdiations, label, description 等逻辑。
       if (
-        schema.children && 
-        !schema.component 
+        schema.children &&
+        !schema.component
         // && schema.asFormItem
-        ) {
+      ) {
         schema.component = PlaceholderComponent;
         schema.renderChildren = schema.children;
         delete schema.children;
