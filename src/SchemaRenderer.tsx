@@ -41,25 +41,51 @@ function PlaceholderComponent(props: any) {
 
 export function SchemaRenderer(props: SchemaRenderer.SchemaRendererProps) {
   const renderer = useRef<Renderer.RendererConfig | null>(null);
+  const rendererKey = useRef('');
   // 这个方法用于依据 path 匹配组件
   const currRenderer = (skipResolve = false): any => {
     let schema = props.schema;
     let path = props.$path;
 
-    if (schema?.type && (skipResolve || !renderer.current)) {
+    if (
+      schema?.type &&
+      (skipResolve ||
+        !renderer.current ||
+        rendererKey.current !== `${schema.type}-${schema.$$id}`)
+    ) {
       const rendererResolver = props?.env?.rendererResolver || resolveRenderer;
       renderer.current = rendererResolver(path, schema);
+      rendererKey.current = `${schema.type}-${schema.$$id}`;
     } else {
       // 自定义组件如果在节点设置了 label name 什么的，就用 formItem 包一层
       // 至少自动支持了 valdiations, label, description 等逻辑。
       if (
         schema.children &&
         !schema.component
-        // && schema.asFormItem
+        && schema.asFormItem
       ) {
         schema.component = PlaceholderComponent;
         schema.renderChildren = schema.children;
         delete schema.children;
+      }
+      if (
+        schema.component &&
+        !schema.component.wrapedAsFormItem &&
+        schema.asFormItem
+      ) {
+        const cache = componentCache.get(schema.component);
+
+        if (cache) {
+          schema.component = cache;
+        } else {
+          const cache = asFormItem({
+            strictMode: false,
+            ...schema.asFormItem,
+          })(schema.component);
+          componentCache.set(schema.component, cache);
+          cache.wrapedAsFormItem = true;
+          schema.component = cache;
+        }
       }
     }
 
