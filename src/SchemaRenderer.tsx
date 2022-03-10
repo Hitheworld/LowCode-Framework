@@ -3,7 +3,7 @@ import omit from 'lodash/omit';
 import { loadRenderer, resolveRenderer, filterSchema } from '@/factory';
 import { renderChild, renderChildren } from '@/Root';
 import getExprProperties from '@/utils/filter-schema';
-import {SimpleMap} from '@/utils/SimpleMap';
+import { SimpleMap } from '@/utils/SimpleMap';
 import LazyComponent from '@/components/LazyComponent';
 
 const defaultOmitList = [
@@ -86,10 +86,10 @@ export function SchemaRenderer(props: SchemaRenderer.SchemaRendererProps) {
         if (cache) {
           schema.component = cache;
         } else {
-          const cache = asFormItem({
-            strictMode: false,
-            ...schema.asFormItem,
-          })(schema.component);
+          // const cache = asFormItem({
+          //   strictMode: false,
+          //   ...schema.asFormItem,
+          // })(schema.component);
           componentCache.set(schema.component, cache);
           cache.wrapedAsFormItem = true;
           schema.component = cache;
