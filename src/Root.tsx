@@ -67,6 +67,14 @@ export default function Root(props: Root.RootProps) {
     ...rest
   } = props;
 
+  const resolveDefinitions = (name: string) => {
+    const definitions = (schema as Schema.Schema).definitions;
+    if (!name || isEmpty(definitions)) {
+      return {};
+    }
+    return definitions && definitions[name];
+  };
+
   const theme = env?.theme;
   let themeName = props.theme || 'cxd';
   if (themeName === 'default') {
@@ -89,7 +97,7 @@ export default function Root(props: Root.RootProps) {
         }
         {...rest}
         rootStore={rootStore}
-        // resolveDefinitions={this.resolveDefinitions}
+        resolveDefinitions={resolveDefinitions}
         location={location}
         data={data}
         env={env}

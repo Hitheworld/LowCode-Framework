@@ -60,27 +60,6 @@
                     {
                       "type": "tpl",
                       "tpl": "页面A-2"
-                    },
-                    {
-                      "type": "service",
-                      "api": "/amis/api/mock2/sample?perPage=5",
-                      "body": [
-                        {
-                          "type": "table",
-                          "title": "表格1",
-                          "source": "$rows",
-                          "columns": [
-                            {
-                              "name": "engine",
-                              "label": "Engine"
-                            },
-                            {
-                              "name": "version",
-                              "label": "Version"
-                            }
-                          ]
-                        }
-                      ]
                     }
                   ]
                 }
