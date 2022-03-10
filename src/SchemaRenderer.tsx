@@ -3,6 +3,7 @@ import omit from 'lodash/omit';
 import { loadRenderer, resolveRenderer, filterSchema } from '@/factory';
 import { renderChild, renderChildren } from '@/Root';
 import getExprProperties from '@/utils/filter-schema';
+import {SimpleMap} from '@/utils/SimpleMap';
 import LazyComponent from '@/components/LazyComponent';
 
 const defaultOmitList = [
