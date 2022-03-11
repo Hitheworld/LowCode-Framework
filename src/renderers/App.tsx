@@ -56,7 +56,15 @@ function Page(props: any) {
     setCollapsed(is);
   };
 
-  const handleMouseover = () => { conosle.log('移动')};
+  // 移入
+  const handleMouseOver = (e: MouseEvent<HTMLDivElement>) => {
+    console.log('移动MouseOver:', e);
+  };
+
+  // 移出
+  const handleMouseOut = (e: MouseEvent<HTMLDivElement>) => {
+    console.log('移动MouseOut:', e);
+  };
 
   console.log('state.navigations', state.navigations);
 
@@ -101,7 +109,8 @@ function Page(props: any) {
             onCollapse={handleCollapse}
             trigger={collapsed ? <MenuFoldOutlined /> : <MenuUnfoldOutlined />}
             style={{ position: 'absolute', height: 'calc(100% - 50px)' }}
-            onMouseover={handleMouseover}
+            onMouseOver={handleMouseOver}
+            onMouseOut={handleMouseOut}
           >
             <Menu theme="dark" mode="inline">
               {state.navigations?.map((item) => (
