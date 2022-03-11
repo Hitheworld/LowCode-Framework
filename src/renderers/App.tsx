@@ -56,6 +56,8 @@ function Page(props: any) {
     setCollapsed(is);
   };
 
+  const handleMouseover = () => { conosle.log('移动')};
+
   console.log('state.navigations', state.navigations);
 
   return (
@@ -68,6 +70,7 @@ function Page(props: any) {
               left: <LeftOutlined />,
               right: <RightOutlined />,
             }}
+            tabBarStyle={null}
           >
             {new Array(15).fill(null).map((_, index) => {
               const key = index + 1;
@@ -98,6 +101,7 @@ function Page(props: any) {
             onCollapse={handleCollapse}
             trigger={collapsed ? <MenuFoldOutlined /> : <MenuUnfoldOutlined />}
             style={{ position: 'absolute', height: 'calc(100% - 50px)' }}
+            onMouseover={handleMouseover}
           >
             <Menu theme="dark" mode="inline">
               {state.navigations?.map((item) => (
