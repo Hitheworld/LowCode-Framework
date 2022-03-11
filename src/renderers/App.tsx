@@ -77,40 +77,19 @@ function AppRenderer(props: any) {
               right: <RightOutlined />,
             }}
             tabBarStyle={null}
-          >
-            {new Array(15).fill(null).map((_, index) => {
-              const key = index + 1;
-              return (
-                <TabPane
-                  key={index}
-                  tab={`nav ${key}`}
-                  style={{
-                    padding: 0,
-                    color: '#fff',
-                  }}
-                />
-              );
-            })}
-          </Tabs>
-          {/* <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
-            {new Array(15).fill(null).map((_, index) => {
-              const key = index + 1;
-              return <Menu.Item key={key}>{`nav ${key}`}</Menu.Item>;
-            })}
-          </Menu> */}
+            renderTabBar={(props, DefaultTabBar) => (
+              <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
+                {new Array(15).fill(null).map((_, index) => {
+                  const key = index + 1;
+                  return <Menu.Item key={key}>{`nav ${key}`}</Menu.Item>;
+                })}
+              </Menu>
+            )}
+          />
+      
         </Header>
         <Layout>
           <Sider collapsedWidth={50} collapsed trigger={null} />
-          <AsideNav
-            logo="图标文件"
-            navigations={state.navigations}
-            // isActive={(link: any) => !!env.isCurrentUrl(link?.path, link)}
-            isActive={(link: any) => isCurrentUrl(link?.path, link)}
-            loading={initLoading}
-            path={props.location.location.pathname}
-            bcn={state.bcn}
-            onNavClick={handleNavClick}
-          />
           <Sider
             collapsedWidth={50}
             collapsed={collapsed}
@@ -118,8 +97,9 @@ function AppRenderer(props: any) {
             style={{
               position: 'absolute',
               height: 'calc(100% - 50px)',
-              width: 'calc(180px + 50px)',
+              zIndex: '99999',
             }}
+            width={180 + 50}
             onMouseOver={handleMouseOver}
             onMouseOut={handleMouseOut}
           >
@@ -131,6 +111,16 @@ function AppRenderer(props: any) {
               ))}
             </Menu>
           </Sider>
+          <AsideNav
+            logo="图标文件"
+            navigations={state.navigations}
+            // isActive={(link: any) => !!env.isCurrentUrl(link?.path, link)}
+            isActive={(link: any) => isCurrentUrl(link?.path, link)}
+            loading={initLoading}
+            path={props.location.location.pathname}
+            bcn={state.bcn}
+            onNavClick={handleNavClick}
+          />
           <Layout className="site-layout">
             <Spin spinning={initLoading}>
               <Content style={{ padding: '0 50px' }}>
