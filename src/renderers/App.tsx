@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext, useMemo } from 'react';
-import { Layout, Menu, Breadcrumb, Spin, Tabs } from 'antd';
+import { Layout, Menu, Breadcrumb, Spin, Badge, Avatar, Tabs } from 'antd';
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   LeftOutlined,
   RightOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
 import { AppActions } from '@/store/constants';
 import { Renderer, EnvContext } from '@/factory';
@@ -72,14 +73,30 @@ function AppRenderer(props: any) {
         <Header
           theme="light"
           style={{
-            padding: 0,
-            height: 50,
+            display: 'flex',
+            alignItems: 'center',
+            padding: '0 16px',
+            height: '50px',
             lineHeight: '50px',
-            background: '#fff',
+            // background: '#fff',
+            boxShadow: '0 1px 4px rgb(0 21 41 / 8%)',
+            zIndex: '99',
           }}
         >
-          <div className="logo" />
+          <div style={{ flex: '1 1 0%' }}>
+            <img
+              style={{ width: '100px' }}
+              src="https://web-test.1919.cn/manage/image/logo.png"
+              className="logo"
+            />
+            <span style={{ color: '#fff' }}>管理中心</span>
+          </div>
+          <Badge count={1}>
+            <Avatar shape="square" icon={<UserOutlined />} />
+          </Badge>
+          {/* 
           <Tabs
+            tabPosition="top"
             tabBarExtraContent={{
               left: <LeftOutlined />,
               right: <RightOutlined />,
@@ -107,6 +124,7 @@ function AppRenderer(props: any) {
               );
             })}
           </Tabs>
+          */}
           {/* 
           <Menu
                 theme="dark"
