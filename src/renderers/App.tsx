@@ -56,12 +56,6 @@ function Page(props: any) {
     setCollapsed(is);
   };
 
-  // tabs左右箭头
-  const OperationsSlot = {
-    left: <LeftOutlined />,
-    right: <RightOutlined />,
-  };
-
   console.log('state.navigations', state.navigations);
 
   return (
@@ -69,7 +63,12 @@ function Page(props: any) {
       <Layout style={{ minHeight: '100vh' }}>
         <Header style={{ padding: 0, height: 50, lineHeight: '50px' }}>
           <div className="logo" />
-          <Tabs tabBarExtraContent={OperationsSlot}>
+          <Tabs
+            tabBarExtraContent={{
+              left: <LeftOutlined />,
+              right: <RightOutlined />,
+            }}
+          >
             {new Array(15).fill(null).map((_, index) => {
               const key = index + 1;
               return (
