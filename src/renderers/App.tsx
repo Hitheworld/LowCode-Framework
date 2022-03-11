@@ -112,7 +112,7 @@ function Page(props: any) {
             onNavClick={handleNavClick}
           />
           <Sider
-            // collapsedWidth={50}
+            collapsedWidth={50}
             // collapsible
             collapsed={collapsed}
             // onCollapse={handleCollapse}
