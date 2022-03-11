@@ -143,6 +143,7 @@ function AsideNav(props: any) {
       collapsed={collapsed}
       onCollapse={handleCollapse}
       trigger={collapsed ? <MenuFoldOutlined /> : <MenuUnfoldOutlined />}
+      collapsedWidth={0}
     >
       <div className="logo">{logo}</div>
       {loading ? (

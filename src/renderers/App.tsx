@@ -65,11 +65,13 @@ function Page(props: any) {
           </Menu>
         </Header>
         <Layout>
+          <Sider collapsedWidth={50} collapsed trigger={null} />
           <Sider
-            collapsedWidth={60}
+            collapsedWidth={50}
             collapsed
             onCollapse={handleCollapse}
             trigger={collapsed ? <MenuFoldOutlined /> : <MenuUnfoldOutlined />}
+            style={{ position: 'absolute', height: '100%' }}
           >
             <Menu theme="dark" mode="inline">
               {state.navigations?.map((item) => (
