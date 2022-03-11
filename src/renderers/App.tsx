@@ -59,13 +59,13 @@ function Page(props: any) {
   // 移入
   const handleMouseOver = (e: MouseEvent<HTMLDivElement>) => {
     console.log('移动MouseOver:', e);
-    setCollapsed(true);
+    setCollapsed(false);
   };
 
   // 移出
   const handleMouseOut = (e: MouseEvent<HTMLDivElement>) => {
     console.log('移动MouseOut:', e);
-    setCollapsed(false);
+    setCollapsed(true);
   };
 
   console.log('state.navigations', state.navigations);
@@ -105,13 +105,27 @@ function Page(props: any) {
         </Header>
         <Layout>
           <Sider collapsedWidth={50} collapsed trigger={null} />
+          <AsideNav
+            logo="图标文件"
+            navigations={state.navigations}
+            // isActive={(link: any) => !!env.isCurrentUrl(link?.path, link)}
+            isActive={(link: any) => isCurrentUrl(link?.path, link)}
+            loading={initLoading}
+            path={props.location.location.pathname}
+            bcn={state.bcn}
+            onNavClick={handleNavClick}
+          />
           <Sider
             // collapsedWidth={50}
             // collapsible
             collapsed={collapsed}
             // onCollapse={handleCollapse}
             trigger={collapsed ? <MenuFoldOutlined /> : <MenuUnfoldOutlined />}
-            style={{ position: 'absolute', height: 'calc(100% - 50px)' }}
+            style={{
+              position: 'absolute',
+              height: 'calc(100% - 50px)',
+              width: '100%',
+            }}
             onMouseOver={handleMouseOver}
             onMouseOut={handleMouseOut}
           >
@@ -123,16 +137,6 @@ function Page(props: any) {
               ))}
             </Menu>
           </Sider>
-          <AsideNav
-            logo="图标文件"
-            navigations={state.navigations}
-            // isActive={(link: any) => !!env.isCurrentUrl(link?.path, link)}
-            isActive={(link: any) => isCurrentUrl(link?.path, link)}
-            loading={initLoading}
-            path={props.location.location.pathname}
-            bcn={state.bcn}
-            onNavClick={handleNavClick}
-          />
           <Layout className="site-layout">
             <Spin spinning={initLoading}>
               <Content style={{ padding: '0 50px' }}>
