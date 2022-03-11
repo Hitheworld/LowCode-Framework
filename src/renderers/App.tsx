@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Layout, Menu, Breadcrumb, Spin } from 'antd';
+import { Layout, Menu, Breadcrumb, Spin, Tabs } from 'antd';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { AppActions } from '@/store/constants';
 import { Renderer, EnvContext } from '@/factory';
@@ -12,6 +12,7 @@ import { RootStoreContext } from '@/store';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
+const { TabPane } = Tabs;
 
 function Page(props: any) {
   const { asideBefore, asideAfter, render, env } = props;
@@ -57,12 +58,27 @@ function Page(props: any) {
       <Layout style={{ minHeight: '100vh' }}>
         <Header style={{ padding: 0, height: 50, lineHeight: '50px' }}>
           <div className="logo" />
-          <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
+          <Tabs>
+            {new Array(15).fill(null).map((_, index) => {
+              const key = index + 1;
+              return (
+                <TabPane
+                key={index}
+                  tab={`nav ${key}`}
+                  style={{
+                    padding: 0,
+                    color: '#f00',
+                  }}
+                />
+              );
+            })}
+          </Tabs>
+          {/* <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
             {new Array(15).fill(null).map((_, index) => {
               const key = index + 1;
               return <Menu.Item key={key}>{`nav ${key}`}</Menu.Item>;
             })}
-          </Menu>
+          </Menu> */}
         </Header>
         <Layout>
           <Sider collapsedWidth={50} collapsed trigger={null} />
