@@ -19,7 +19,7 @@ const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 const { TabPane } = Tabs;
 
-function Page(props: any) {
+function AppRenderer(props: any) {
   const { asideBefore, asideAfter, render, env } = props;
 
   const [state, dispatch] = useContext(RootStoreContext);
@@ -113,14 +113,12 @@ function Page(props: any) {
           />
           <Sider
             collapsedWidth={50}
-            // collapsible
             collapsed={collapsed}
-            // onCollapse={handleCollapse}
             trigger={collapsed ? <MenuFoldOutlined /> : <MenuUnfoldOutlined />}
             style={{
               position: 'absolute',
               height: 'calc(100% - 50px)',
-              width: '100%',
+              width: 'calc(180px + 50px)',
             }}
             onMouseOver={handleMouseOver}
             onMouseOut={handleMouseOut}
@@ -181,4 +179,4 @@ function Page(props: any) {
 export default Renderer({
   type: 'app',
   // storeType: AppStore.name,
-})(Page);
+})(AppRenderer);
