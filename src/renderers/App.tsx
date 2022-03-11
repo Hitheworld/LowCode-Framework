@@ -51,19 +51,15 @@ function Page(props: any) {
   };
 
   // 展开与收缩
-  const [collapsed, setCollapsed] = useState<boolean>(false);
-  const handleCollapse = (is: boolean) => {
-    setCollapsed(is);
-  };
-
+  const [collapsed, setCollapsed] = useState<boolean>(true);
   // 移入
-  const handleMouseOver = (e: MouseEvent<HTMLDivElement>) => {
+  const handleMouseOver = (e: MouseEvent<HTMLElement>) => {
     console.log('移动MouseOver:', e);
     setCollapsed(false);
   };
 
   // 移出
-  const handleMouseOut = (e: MouseEvent<HTMLDivElement>) => {
+  const handleMouseOut = (e: MouseEvent<HTMLElement>) => {
     console.log('移动MouseOut:', e);
     setCollapsed(true);
   };
