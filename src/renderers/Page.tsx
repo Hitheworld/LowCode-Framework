@@ -133,7 +133,7 @@ function Page(props: any) {
     <div className="page">
       <div>Page页面</div>
 
-      <Layout style={{ minHeight: '100vh' }}>
+      <Layout>
         {hasAside ? (
           <>
             {render('aside', aside || '', {
