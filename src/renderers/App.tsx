@@ -91,7 +91,7 @@ function AppRenderer(props: any) {
             />
             <span style={{ color: '#fff' }}>管理中心</span>
           </div>
-          <Badge count={1}>
+          <Badge count={1} offset={[-5, 5]}>
             <Avatar shape="square" icon={<UserOutlined />} />
           </Badge>
           {/* 
