@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Layout, Menu, Breadcrumb, Spin, Tabs } from 'antd';
+import React, { useState, useEffect, useContext, useMemo } from 'react';
+import { Layout, Menu, Breadcrumb, Spin, Tabs, Button } from 'antd';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { AppActions } from '@/store/constants';
 import { Renderer, EnvContext } from '@/factory';
@@ -51,6 +51,20 @@ function Page(props: any) {
     setCollapsed(is);
   };
 
+  const [position, setPosition] = useState(['left', 'right']);
+  const OperationsSlot = {
+    left: <Button className="tabs-extra-demo-button">Left Extra Action</Button>,
+    right: <Button>Right Extra Action</Button>,
+  };
+  const slot = useMemo(() => {
+    if (position.length === 0) return null;
+
+    return position.reduce(
+      (acc, direction) => ({ ...acc, [direction]: OperationsSlot[direction] }),
+      {}
+    );
+  }, [position]);
+
   console.log('state.navigations', state.navigations);
 
   return (
@@ -58,16 +72,16 @@ function Page(props: any) {
       <Layout style={{ minHeight: '100vh' }}>
         <Header style={{ padding: 0, height: 50, lineHeight: '50px' }}>
           <div className="logo" />
-          <Tabs>
+          <Tabs tabBarExtraContent={slot}>
             {new Array(15).fill(null).map((_, index) => {
               const key = index + 1;
               return (
                 <TabPane
-                key={index}
+                  key={index}
                   tab={`nav ${key}`}
                   style={{
                     padding: 0,
-                    color: '#f00',
+                    color: '#fff',
                   }}
                 />
               );
