@@ -55,7 +55,7 @@ function Page(props: any) {
   return (
     <>
       <Layout style={{ minHeight: '100vh' }}>
-        <Header style={{ padding: 0 }}>
+        <Header style={{ padding: 0, height: 50, lineHeight: '50px' }}>
           <div className="logo" />
           <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
             {new Array(15).fill(null).map((_, index) => {

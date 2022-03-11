@@ -144,6 +144,8 @@ function AsideNav(props: any) {
       onCollapse={handleCollapse}
       trigger={collapsed ? <MenuFoldOutlined /> : <MenuUnfoldOutlined />}
       collapsedWidth={0}
+      width={180}
+      zeroWidthTriggerStyle={{ top: 'calc(50% - 50 - 12)' }}
     >
       <div className="logo">{logo}</div>
       {loading ? (
