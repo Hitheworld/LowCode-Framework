@@ -50,24 +50,35 @@ function Page(props: any) {
     setCollapsed(is);
   };
 
+  console.log('state.navigations', state.navigations);
+
   return (
     <>
       <Layout style={{ minHeight: '100vh' }}>
-        <Sider
-          collapsedWidth={60}
-          collapsed
-          onCollapse={handleCollapse}
-          trigger={collapsed ? <MenuFoldOutlined /> : <MenuUnfoldOutlined />}
-        >
-          <Menu theme="dark" mode="inline">
-            {state.navigations?.map((item) => (
-              <Menu.Item key={item?.id + ''} icon={<MenuFoldOutlined />}>
-                {item?.label}
-              </Menu.Item>
-            ))}
+        <Header style={{ padding: 0 }}>
+          <div className="logo" />
+          <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
+            {new Array(15).fill(null).map((_, index) => {
+              const key = index + 1;
+              return <Menu.Item key={key}>{`nav ${key}`}</Menu.Item>;
+            })}
           </Menu>
-        </Sider>
+        </Header>
         <Layout>
+          <Sider
+            collapsedWidth={60}
+            collapsed
+            onCollapse={handleCollapse}
+            trigger={collapsed ? <MenuFoldOutlined /> : <MenuUnfoldOutlined />}
+          >
+            <Menu theme="dark" mode="inline">
+              {state.navigations?.map((item) => (
+                <Menu.Item key={item?.id} icon={<MenuFoldOutlined />}>
+                  {item?.label}
+                </Menu.Item>
+              ))}
+            </Menu>
+          </Sider>
           <AsideNav
             logo="图标文件"
             navigations={state.navigations}
@@ -78,17 +89,7 @@ function Page(props: any) {
             bcn={state.bcn}
             onNavClick={handleNavClick}
           />
-
           <Layout className="site-layout">
-            <Header style={{ padding: 0 }}>
-              <div className="logo" />
-              <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
-                {new Array(15).fill(null).map((_, index) => {
-                  const key = index + 1;
-                  return <Menu.Item key={key}>{`nav ${key}`}</Menu.Item>;
-                })}
-              </Menu>
-            </Header>
             <Spin spinning={initLoading}>
               <Content style={{ padding: '0 50px' }}>
                 {state.bcn?.length ? (
