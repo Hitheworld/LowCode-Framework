@@ -71,7 +71,7 @@ function Page(props: any) {
             collapsed
             onCollapse={handleCollapse}
             trigger={collapsed ? <MenuFoldOutlined /> : <MenuUnfoldOutlined />}
-            style={{ position: 'absolute', height: '100%' }}
+            style={{ position: 'absolute', height: 'calc(100% - 50px)' }}
           >
             <Menu theme="dark" mode="inline">
               {state.navigations?.map((item) => (
