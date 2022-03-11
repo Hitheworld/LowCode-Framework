@@ -59,11 +59,13 @@ function Page(props: any) {
   // 移入
   const handleMouseOver = (e: MouseEvent<HTMLDivElement>) => {
     console.log('移动MouseOver:', e);
+    setCollapsed(true);
   };
 
   // 移出
   const handleMouseOut = (e: MouseEvent<HTMLDivElement>) => {
     console.log('移动MouseOut:', e);
+    setCollapsed(false);
   };
 
   console.log('state.navigations', state.navigations);
@@ -104,9 +106,10 @@ function Page(props: any) {
         <Layout>
           <Sider collapsedWidth={50} collapsed trigger={null} />
           <Sider
-            collapsedWidth={50}
-            collapsed
-            onCollapse={handleCollapse}
+            // collapsedWidth={50}
+            // collapsible
+            collapsed={collapsed}
+            // onCollapse={handleCollapse}
             trigger={collapsed ? <MenuFoldOutlined /> : <MenuUnfoldOutlined />}
             style={{ position: 'absolute', height: 'calc(100% - 50px)' }}
             onMouseOver={handleMouseOver}
