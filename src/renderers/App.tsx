@@ -69,24 +69,57 @@ function AppRenderer(props: any) {
   return (
     <>
       <Layout style={{ minHeight: '100vh' }}>
-        <Header style={{ padding: 0, height: 50, lineHeight: '50px' }}>
+        <Header
+          theme="light"
+          style={{
+            padding: 0,
+            height: 50,
+            lineHeight: '50px',
+            background: '#fff',
+          }}
+        >
           <div className="logo" />
           <Tabs
             tabBarExtraContent={{
               left: <LeftOutlined />,
               right: <RightOutlined />,
             }}
-            tabBarStyle={null}
+            centered
+            moreIcon={null}
+            tabBarStyle={{ margin: 0, border: 'none' }}
             renderTabBar={(props, DefaultTabBar) => (
-              <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
+              <DefaultTabBar {...props}>
+                {(node) => <div>{node} -- pppp</div>}
+              </DefaultTabBar>
+            )}
+          >
+            {new Array(15).fill(null).map((_, index) => {
+              const key = index + 1;
+              return (
+                <TabPane
+                  key={index}
+                  tab={`nav ${key}`}
+                  style={{
+                    padding: 0,
+                    color: '#fff',
+                  }}
+                />
+              );
+            })}
+          </Tabs>
+          {/* 
+          <Menu
+                theme="dark"
+                overflowedIndicator={null}
+                mode="horizontal"
+                defaultSelectedKeys={['2']}
+              >
                 {new Array(15).fill(null).map((_, index) => {
                   const key = index + 1;
                   return <Menu.Item key={key}>{`nav ${key}`}</Menu.Item>;
                 })}
               </Menu>
-            )}
-          />
-      
+          */}
         </Header>
         <Layout>
           <Sider collapsedWidth={50} collapsed trigger={null} />
