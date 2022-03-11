@@ -138,6 +138,7 @@ function AsideNav(props: any) {
 
   return (
     <Sider
+      theme="light"
       collapsible
       collapsed={collapsed}
       onCollapse={handleCollapse}

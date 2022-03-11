@@ -54,8 +54,8 @@ function Page(props: any) {
     <>
       <Layout style={{ minHeight: '100vh' }}>
         <Sider
-          collapsible
-          collapsed={collapsed}
+          collapsedWidth={60}
+          collapsed
           onCollapse={handleCollapse}
           trigger={collapsed ? <MenuFoldOutlined /> : <MenuUnfoldOutlined />}
         >
