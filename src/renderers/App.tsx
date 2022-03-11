@@ -51,19 +51,11 @@ function Page(props: any) {
     setCollapsed(is);
   };
 
-  const [position, setPosition] = useState(['left', 'right']);
+  // tabs左右箭头
   const OperationsSlot = {
     left: <Button className="tabs-extra-demo-button">Left Extra Action</Button>,
     right: <Button>Right Extra Action</Button>,
   };
-  const slot = useMemo(() => {
-    if (position.length === 0) return null;
-
-    return position.reduce(
-      (acc, direction) => ({ ...acc, [direction]: OperationsSlot[direction] }),
-      {}
-    );
-  }, [position]);
 
   console.log('state.navigations', state.navigations);
 
@@ -72,7 +64,7 @@ function Page(props: any) {
       <Layout style={{ minHeight: '100vh' }}>
         <Header style={{ padding: 0, height: 50, lineHeight: '50px' }}>
           <div className="logo" />
-          <Tabs tabBarExtraContent={slot}>
+          <Tabs tabBarExtraContent={OperationsSlot}>
             {new Array(15).fill(null).map((_, index) => {
               const key = index + 1;
               return (
