@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useContext, useMemo } from 'react';
-import { Layout, Menu, Breadcrumb, Spin, Tabs, Button } from 'antd';
-import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { Layout, Menu, Breadcrumb, Spin, Tabs } from 'antd';
+import {
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  LeftOutlined,
+  RightOutlined,
+} from '@ant-design/icons';
 import { AppActions } from '@/store/constants';
 import { Renderer, EnvContext } from '@/factory';
 import { createObject } from '@/utils/helper';
@@ -53,8 +58,8 @@ function Page(props: any) {
 
   // tabs左右箭头
   const OperationsSlot = {
-    left: <Button className="tabs-extra-demo-button">Left Extra Action</Button>,
-    right: <Button>Right Extra Action</Button>,
+    left: <LeftOutlined />,
+    right: <RightOutlined />,
   };
 
   console.log('state.navigations', state.navigations);
