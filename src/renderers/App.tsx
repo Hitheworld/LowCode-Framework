@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Layout, Menu, Breadcrumb, Spin } from 'antd';
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { AppActions } from '@/store/constants';
 import { Renderer, EnvContext } from '@/factory';
 import { createObject } from '@/utils/helper';
@@ -43,67 +44,89 @@ function Page(props: any) {
     });
   };
 
+  // 展开与收缩
+  const [collapsed, setCollapsed] = useState<boolean>(false);
+  const handleCollapse = (is: boolean) => {
+    setCollapsed(is);
+  };
+
   return (
     <>
       <Layout style={{ minHeight: '100vh' }}>
-        <AsideNav
-          logo="图标文件"
-          navigations={state.navigations}
-          // isActive={(link: any) => !!env.isCurrentUrl(link?.path, link)}
-          isActive={(link: any) => isCurrentUrl(link?.path, link)}
-          loading={initLoading}
-          path={props.location.location.pathname}
-          bcn={state.bcn}
-          onNavClick={handleNavClick}
-        />
+        <Sider
+          collapsible
+          collapsed={collapsed}
+          onCollapse={handleCollapse}
+          trigger={collapsed ? <MenuFoldOutlined /> : <MenuUnfoldOutlined />}
+        >
+          <Menu theme="dark" mode="inline">
+            {state.navigations?.map((item) => (
+              <Menu.Item key={item?.id + ''} icon={<MenuFoldOutlined />}>
+                {item?.label}
+              </Menu.Item>
+            ))}
+          </Menu>
+        </Sider>
+        <Layout>
+          <AsideNav
+            logo="图标文件"
+            navigations={state.navigations}
+            // isActive={(link: any) => !!env.isCurrentUrl(link?.path, link)}
+            isActive={(link: any) => isCurrentUrl(link?.path, link)}
+            loading={initLoading}
+            path={props.location.location.pathname}
+            bcn={state.bcn}
+            onNavClick={handleNavClick}
+          />
 
-        <Layout className="site-layout">
-          <Header style={{ padding: 0 }}>
-            <div className="logo" />
-            <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
-              {new Array(15).fill(null).map((_, index) => {
-                const key = index + 1;
-                return <Menu.Item key={key}>{`nav ${key}`}</Menu.Item>;
-              })}
-            </Menu>
-          </Header>
-          <Spin spinning={initLoading}>
-            <Content style={{ padding: '0 50px' }}>
-              {state.bcn?.length ? (
-                <Breadcrumb style={{ margin: '16px 0' }}>
-                  {state.bcn?.map((item) => (
-                    <Breadcrumb.Item key={item?.path}>
-                      {state.bcn?.indexOf(item) === state.bcn?.length - 1 ? (
-                        item?.label
-                      ) : (
-                        <a href={item?.path}>{item?.label}</a>
-                      )}
-                    </Breadcrumb.Item>
-                  ))}
-                </Breadcrumb>
-              ) : null}
-
-              <div className="site-layout-content">
-                {asideBefore ? render('aside-before', asideBefore) : null}
-                <div>App页面</div>
-                {state.activePage && state.schema ? (
-                  <>
-                    {render('page', state.schema, {
-                      key: `${state.activePage?.id}-${state.schemaKey}`,
-                      data: createObject(state.data, {
-                        params: state.activePage?.params || {},
-                      }),
-                    })}
-                  </>
-                ) : state.pages && !state.activePage && !initLoading ? (
-                  <NotFound />
+          <Layout className="site-layout">
+            <Header style={{ padding: 0 }}>
+              <div className="logo" />
+              <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
+                {new Array(15).fill(null).map((_, index) => {
+                  const key = index + 1;
+                  return <Menu.Item key={key}>{`nav ${key}`}</Menu.Item>;
+                })}
+              </Menu>
+            </Header>
+            <Spin spinning={initLoading}>
+              <Content style={{ padding: '0 50px' }}>
+                {state.bcn?.length ? (
+                  <Breadcrumb style={{ margin: '16px 0' }}>
+                    {state.bcn?.map((item) => (
+                      <Breadcrumb.Item key={item?.path}>
+                        {state.bcn?.indexOf(item) === state.bcn?.length - 1 ? (
+                          item?.label
+                        ) : (
+                          <a href={item?.path}>{item?.label}</a>
+                        )}
+                      </Breadcrumb.Item>
+                    ))}
+                  </Breadcrumb>
                 ) : null}
-              </div>
-            </Content>
-          </Spin>
-          <Footer style={{ textAlign: 'center' }}>
-            {asideAfter ? render('aside-before', asideAfter) : null}
-          </Footer>
+
+                <div className="site-layout-content">
+                  {asideBefore ? render('aside-before', asideBefore) : null}
+                  <div>App页面</div>
+                  {state.activePage && state.schema ? (
+                    <>
+                      {render('page', state.schema, {
+                        key: `${state.activePage?.id}-${state.schemaKey}`,
+                        data: createObject(state.data, {
+                          params: state.activePage?.params || {},
+                        }),
+                      })}
+                    </>
+                  ) : state.pages && !state.activePage && !initLoading ? (
+                    <NotFound />
+                  ) : null}
+                </div>
+              </Content>
+            </Spin>
+            <Footer style={{ textAlign: 'center' }}>
+              {asideAfter ? render('aside-before', asideAfter) : null}
+            </Footer>
+          </Layout>
         </Layout>
       </Layout>
     </>

@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import cx from 'classnames';
 import { Layout, Menu, Skeleton } from 'antd';
 import {
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
   DesktopOutlined,
   PieChartOutlined,
   FileOutlined,
@@ -135,7 +137,12 @@ function AsideNav(props: any) {
   };
 
   return (
-    <Sider collapsible collapsed={collapsed} onCollapse={handleCollapse}>
+    <Sider
+      collapsible
+      collapsed={collapsed}
+      onCollapse={handleCollapse}
+      trigger={collapsed ? <MenuFoldOutlined /> : <MenuUnfoldOutlined />}
+    >
       <div className="logo">{logo}</div>
       {loading ? (
         <div style={{ padding: 24 }}>
@@ -149,7 +156,7 @@ function AsideNav(props: any) {
         </div>
       ) : routes?.length ? (
         <Menu
-          theme="dark"
+          theme="light"
           defaultOpenKeys={bcnIds}
           defaultSelectedKeys={bcnIds[bcnIds?.length - 1]}
           mode="inline"
