@@ -20,7 +20,8 @@ import '@/renderers/Remark';
 import '@/renderers/Action';
 import '@/renderers/Service';
 import '@/renderers/Table';
-import '@/renderers/Form';
+import '@/renderers/Form/index';
+import '@/renderers/Form/InputText';
 import '@/renderers/IFrame';
 
 // 临时解决 antd "findDOMNode" 问题,生产环境不影响
