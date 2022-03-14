@@ -172,41 +172,60 @@ function AppRenderer(props: any) {
             bcn={state.bcn}
             onNavClick={handleNavClick}
           />
-          <Layout className="site-layout">
-            <Spin spinning={initLoading}>
-              <Content style={{ padding: '0 50px' }}>
-                {state.bcn?.length ? (
-                  <Breadcrumb style={{ margin: '16px 0' }}>
-                    {state.bcn?.map((item) => (
-                      <Breadcrumb.Item key={item?.path}>
-                        {state.bcn?.indexOf(item) === state.bcn?.length - 1 ? (
-                          item?.label
-                        ) : (
-                          <a href={item?.path}>{item?.label}</a>
-                        )}
-                      </Breadcrumb.Item>
-                    ))}
-                  </Breadcrumb>
-                ) : null}
+          <Layout
+            className="site-layout"
+            style={{
+              position: 'relative',
+              display: 'flex',
+              flexDirection: 'column',
+              flex: '1 1',
+            }}
+          >
+            <div
+              style={{
+                position: 'absolute',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '100%',
+                height: '100%',
+              }}
+            >
+              <Spin spinning={initLoading} />
+            </div>
+            <Content style={{ flex: '1 1' }}>
+              {state.bcn?.length ? (
+                <Breadcrumb style={{ margin: '16px 0' }}>
+                  {state.bcn?.map((item) => (
+                    <Breadcrumb.Item key={item?.path}>
+                      {state.bcn?.indexOf(item) === state.bcn?.length - 1 ? (
+                        item?.label
+                      ) : (
+                        <a href={item?.path}>{item?.label}</a>
+                      )}
+                    </Breadcrumb.Item>
+                  ))}
+                </Breadcrumb>
+              ) : null}
 
-                <div className="site-layout-content">
-                  {asideBefore ? render('aside-before', asideBefore) : null}
-                  <div>App页面</div>
-                  {state.activePage && state.schema ? (
-                    <>
-                      {render('page', state.schema, {
-                        key: `${state.activePage?.id}-${state.schemaKey}`,
-                        data: createObject(state.data, {
-                          params: state.activePage?.params || {},
-                        }),
-                      })}
-                    </>
-                  ) : state.pages && !state.activePage && !initLoading ? (
-                    <NotFound />
-                  ) : null}
-                </div>
-              </Content>
-            </Spin>
+              <div className="site-layout-content">
+                {asideBefore ? render('aside-before', asideBefore) : null}
+                <div>App页面</div>
+                {state.activePage && state.schema ? (
+                  <>
+                    {render('page', state.schema, {
+                      key: `${state.activePage?.id}-${state.schemaKey}`,
+                      data: createObject(state.data, {
+                        params: state.activePage?.params || {},
+                      }),
+                    })}
+                  </>
+                ) : state.pages && !state.activePage && !initLoading ? (
+                  <NotFound />
+                ) : null}
+              </div>
+            </Content>
             <Footer style={{ textAlign: 'center' }}>
               {asideAfter ? render('aside-before', asideAfter) : null}
             </Footer>

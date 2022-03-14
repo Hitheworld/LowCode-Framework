@@ -103,6 +103,9 @@ function IFrameRenderer(props: IFrame.IFrameProps) {
   const currStyle = {
     ...tempStyle,
     ...style,
+    ...{
+      border: 'none',
+    },
   };
 
   if (isPureVariable(src)) {
