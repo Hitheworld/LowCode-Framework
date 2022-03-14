@@ -78,7 +78,7 @@
                 "url": "4",
                 "schema": {
                   "type": "iframe",
-                  "src": "https://www.baidu.com/"
+                  "src": "https://low-code--3000.local.webcontainer.io/"
                 }
               }
             ]

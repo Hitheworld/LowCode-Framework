@@ -97,8 +97,8 @@ function IFrameRenderer(props: IFrame.IFrameProps) {
 
   let tempStyle: any = {};
 
-  width !== void 0 && (tempStyle.width = width);
-  height !== void 0 && (tempStyle.height = height);
+  currWidth !== void 0 && (tempStyle.width = currWidth);
+  currHeight !== void 0 && (tempStyle.height = currHeight);
 
   const currStyle = {
     ...tempStyle,
