@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useContext, useReducer } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useContext,
+  useReducer,
+} from 'react';
 import cx from 'classnames';
 import { Table } from 'antd';
 import { Renderer } from '@/factory';
@@ -94,7 +100,7 @@ function IFrameRenderer(props: IFrame.IFrameProps) {
   width !== void 0 && (tempStyle.width = width);
   height !== void 0 && (tempStyle.height = height);
 
-  style = {
+  const currStyle = {
     ...tempStyle,
     ...style,
   };
@@ -117,7 +123,7 @@ function IFrameRenderer(props: IFrame.IFrameProps) {
     <iframe
       className={className}
       frameBorder={frameBorder}
-      style={style}
+      style={currStyle}
       ref={iFrameRef}
       onLoad={onLoad}
       src={finalSrc}

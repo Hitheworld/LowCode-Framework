@@ -11,6 +11,9 @@ import {
   qsparse,
 } from './helper';
 
+
+const rSchema = /(?:^|raw\:)(get|post|put|delete|patch|options|head):/i;
+
 export function normalizeApi(
   api: Api,
   defaultMethod: string = 'get'

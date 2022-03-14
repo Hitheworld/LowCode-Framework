@@ -72,6 +72,14 @@
                   "title": "页面A-3",
                   "body": "页面A-3"
                 }
+              },
+              {
+                "label": "页面A-4",
+                "url": "4",
+                "schema": {
+                  "type": "iframe",
+                  "src": "https://www.baidu.com/"
+                }
               }
             ]
           },
