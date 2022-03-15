@@ -152,6 +152,35 @@
             "schemaApi": "https://3xsw4ap8wah59.cfc-execute.bj.baidubce.com/api/amis-mock/mock2/service/form?tpl=tpl3"
           }
         ]
+      },
+      {
+        "label": "其它功能",
+        "children": [
+          {
+            "label": "基础表单",
+            "url": "/crud/list",
+            "icon": "fa fa-list",
+            "schemaApi": "get:./pages/form-basic.json"
+          },
+          {
+            "label": "复杂表单",
+            "url": "/crud/list",
+            "icon": "fa fa-list",
+            "schemaApi": "get:./pages/crud-advance.json"
+          },
+          {
+            "label": "代码编辑器",
+            "url": "/crud/list",
+            "icon": "fa fa-list",
+            "schemaApi": "get:./pages/editor.json"
+          },
+          {
+            "label": "Dashboard",
+            "url": "/crud/list",
+            "icon": "fa fa-list",
+            "schemaApi": "get:./pages/console.json"
+          }
+        ]
       }
     ]
   }
