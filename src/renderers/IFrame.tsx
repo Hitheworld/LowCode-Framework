@@ -8,7 +8,7 @@ import React, {
 import cx from 'classnames';
 import { Table } from 'antd';
 import { Renderer } from '@/factory';
-import { isVisible, bulkBindFunctions } from '@/utils/helper';
+import { createObject } from '@/utils/helper';
 import { buildApi, isApiOutdated } from '@/utils/api';
 import { isPureVariable, resolveVariableAndFilter } from '@/utils/tpl-builtin';
 import { RootStoreContext } from '@/store';
@@ -26,8 +26,8 @@ function IFrameRenderer(props: IFrame.IFrameProps) {
     style,
   } = props;
 
-  const [currWidth, setCurrWidth] = useState('');
-  const [currHeight, setCurrHeight] = useState('');
+  const [currWidth, setCurrWidth] = useState<string>('');
+  const [currHeight, setCurrHeight] = useState<string>('');
   const onMessage = (e: MessageEvent) => {
     if (typeof e?.data?.type !== 'string' || !events) {
       return;
