@@ -77,7 +77,9 @@ function AppRenderer(props: any) {
         return false;
       });
       const _ids = page?.id ? [page?.id?.toString()] : [];
+      const _children = page?.children || [];
       setSelectedKeys(_ids);
+      setSubMenus(_children);
     }
   }, [state.navigations]);
 
