@@ -51,6 +51,15 @@ function AppRenderer(props: any) {
     });
   };
 
+  // 点击主菜单
+  const [subMenus, setSubMenus] = useState([]);
+  const handleMainMenu = (e: React.MouseEvent, id: string | number) => {
+    const _currMenuItem = state.navigations?.filter((o) => o?.id === id)[0];
+    const _children = _currMenuItem?.children || [];
+    setSubMenus(_children);
+    handleNavClick(e);
+  };
+
   // 展开与收缩
   const [collapsed, setCollapsed] = useState<boolean>(true);
   // 移入
@@ -157,14 +166,20 @@ function AppRenderer(props: any) {
             <Menu theme="dark" mode="inline">
               {state.navigations?.map((item) => (
                 <Menu.Item key={item?.id} icon={<MenuFoldOutlined />}>
-                  {item?.label}
+                  <a
+                    style={{ display: 'block' }}
+                    onClick={(e) => handleMainMenu(e, item?.id)}
+                    href={item?.path || item?.children?.[0]?.path}
+                  >
+                    {item?.label}
+                  </a>
                 </Menu.Item>
               ))}
             </Menu>
           </Sider>
           <AsideNav
             logo="图标文件"
-            navigations={state.navigations}
+            navigations={subMenus}
             // isActive={(link: any) => !!env.isCurrentUrl(link?.path, link)}
             isActive={(link: any) => isCurrentUrl(link?.path, link)}
             loading={initLoading}

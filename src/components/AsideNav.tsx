@@ -18,40 +18,15 @@ const { Sider } = Layout;
 const { SubMenu } = Menu;
 
 function AsideNav(props: any) {
-  const { logo, onNavClick, loading, path } = props;
+  const { logo, onNavClick, loading, navigations } = props;
 
   const [state, dispatch] = useContext(RootStoreContext);
 
-  const [routes, setRoutes] = useState<AsideNav.LinkItemProps[]>([]);
   const [bcnIds, setBcnIds] = useState([]);
   useEffect(() => {
-    if (props.navigations?.length) {
-      let id = 1;
-      const _list = mapTree(
-        props.navigations,
-        (item: AsideNav.Navigation) => {
-          const isActive =
-            typeof item.active === 'undefined'
-              ? (props.isActive as Function)(item)
-              : item.active;
-
-          const _path = item?.children?.length
-            ? item?.children?.[0]?.path
-            : item?.path;
-          return {
-            ...item,
-            path: _path,
-            id: id++,
-            active: isActive,
-            open: isActive || props?.isOpen?.(item as AsideNav.LinkItemProps),
-          };
-        },
-        1,
-        true
-      );
-
+    if (navigations?.length) {
       let matched: any;
-      let page = findTree(_list, (item) => {
+      let page = findTree(navigations, (item) => {
         if (item.path) {
           // matched = env.isCurrentUrl(item.path, item);
           matched = isCurrentUrl(item.path, item);
@@ -63,7 +38,7 @@ function AsideNav(props: any) {
       });
 
       let bcn: Array<any> = [];
-      findTree(_list, (item, index, level, paths) => {
+      findTree(navigations, (item, index, level, paths) => {
         if (item.id === page?.id) {
           bcn = paths.filter((item) => item.path && item.label);
           bcn.push({
@@ -84,9 +59,8 @@ function AsideNav(props: any) {
 
       const _ids = bcn?.filter((o) => o?.id)?.map((o) => o?.id?.toString());
       setBcnIds(_ids);
-      setRoutes(_list);
     }
-  }, [props.navigations]);
+  }, [navigations]);
 
   // 展开与收缩
   const [collapsed, setCollapsed] = useState<boolean>(false);
@@ -158,15 +132,15 @@ function AsideNav(props: any) {
             }}
           />
         </div>
-      ) : routes?.length ? (
+      ) : navigations?.length ? (
         <Menu
           theme="light"
           defaultOpenKeys={bcnIds}
           defaultSelectedKeys={bcnIds[bcnIds?.length - 1]}
           mode="inline"
         >
-          {Array.isArray(routes)
-            ? routes?.map((item, index) => itemRender(item, index))
+          {Array.isArray(navigations)
+            ? navigations?.map((item, index) => itemRender(item, index))
             : null}
         </Menu>
       ) : null}

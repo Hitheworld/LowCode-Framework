@@ -182,10 +182,27 @@ const reducer = (state: AppStore.State, action: AppStore.IAction) => {
         };
       });
 
+      let id = 1;
+      const _list = mapTree(
+        getNav(_pageList),
+        (item: AsideNav.Navigation) => {
+          const _path = item?.children?.length
+            ? item?.children?.[0]?.path
+            : item?.path;
+          return {
+            ...item,
+            path: _path,
+            id: id++,
+          };
+        },
+        1,
+        true
+      );
+
       return {
         ...state,
         pages: _pageList,
-        navigations: getNav(_pageList),
+        navigations: _list,
       };
     // 更新当前活动页面
     case AppActions.UPDATE_ACTIVE_PAGE:
