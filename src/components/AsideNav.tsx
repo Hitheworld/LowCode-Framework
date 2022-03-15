@@ -72,6 +72,16 @@ function AsideNav(props: any) {
     }
   }, [navigations]);
 
+  // SubMenu 展开/关闭的回调
+  const handleOpenChange = (keys: string[]) => {
+    setOpenKeys(keys);
+  };
+
+  // 点击 MenuItem 调用此函数
+  const handleClick = (e) => {
+    setSelectedKeys(e.key);
+  };
+
   // 展开与收缩
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const handleCollapse = (is: boolean) => {
@@ -145,9 +155,11 @@ function AsideNav(props: any) {
       ) : navigations?.length ? (
         <Menu
           theme="light"
+          mode="inline"
           openKeys={openKeys}
           selectedKeys={selectedKeys}
-          mode="inline"
+          onOpenChange={handleOpenChange}
+          onClick={handleClick}
         >
           {Array.isArray(navigations)
             ? navigations?.map((item, index) => itemRender(item, index))
