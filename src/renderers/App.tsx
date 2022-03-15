@@ -13,6 +13,7 @@ import { createObject } from '@/utils/helper';
 import { useRequest } from '@/hooks/useRequest';
 import AsideNav from '@/components/AsideNav';
 import NotFound from '@/components/NotFound';
+import { findTree } from '@/utils/helper';
 import { updateLocation, jumpTo, isCurrentUrl } from '@/utils/appUtils';
 import { RootStoreContext } from '@/store';
 
@@ -52,13 +53,33 @@ function AppRenderer(props: any) {
   };
 
   // 点击主菜单
-  const [subMenus, setSubMenus] = useState([]);
+  const [subMenus, setSubMenus] = useState<AsideNav.Navigation>([]);
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   const handleMainMenu = (e: React.MouseEvent, id: string | number) => {
     const _currMenuItem = state.navigations?.filter((o) => o?.id === id)[0];
     const _children = _currMenuItem?.children || [];
+    const _ids = id ? [id?.toString()] : [];
+    setSelectedKeys(_ids);
     setSubMenus(_children);
     handleNavClick(e);
   };
+  useEffect(() => {
+    if (state.navigations?.length) {
+      let matched: any;
+      let page = findTree(state.navigations, (item) => {
+        if (item.path) {
+          // matched = env.isCurrentUrl(item.path, item);
+          matched = isCurrentUrl(item.path, item);
+          if (matched) {
+            return true;
+          }
+        }
+        return false;
+      });
+      const _ids = page?.id ? [page?.id?.toString()] : [];
+      setSelectedKeys(_ids);
+    }
+  }, [state.navigations]);
 
   // 展开与收缩
   const [collapsed, setCollapsed] = useState<boolean>(true);
@@ -163,7 +184,7 @@ function AppRenderer(props: any) {
             onMouseOver={handleMouseOver}
             onMouseOut={handleMouseOut}
           >
-            <Menu theme="dark" mode="inline">
+            <Menu theme="dark" mode="inline" selectedKeys={selectedKeys}>
               {state.navigations?.map((item) => (
                 <Menu.Item key={item?.id} icon={<MenuFoldOutlined />}>
                   <a
