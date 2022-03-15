@@ -108,11 +108,12 @@ function IFrameRenderer(props: IFrame.IFrameProps) {
     },
   };
 
+  let currSrc = src;
   if (isPureVariable(src)) {
-    src = resolveVariableAndFilter(src, data, '| raw');
+    currSrc = resolveVariableAndFilter(currSrc, data, '| raw');
   }
 
-  const finalSrc = src ? buildApi(src, data).url : undefined;
+  const finalSrc = currSrc ? buildApi(currSrc, data).url : undefined;
 
   if (
     typeof finalSrc === 'string' &&
