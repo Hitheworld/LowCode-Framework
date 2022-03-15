@@ -44,7 +44,7 @@ function AsideNav(props: any) {
         ?.filter((o) => o?.id)
         ?.map((o) => o?.id?.toString());
       const _currSelectIds = _ids?.length
-        ? [_ids?.[_ids?.length - 1]?.toString()]
+        ? _ids?.pop()
         : [];
       console.log('_currSelectIds:', _currSelectIds);
       setSelectedKeys(_currSelectIds);
