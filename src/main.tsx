@@ -17,6 +17,7 @@ import '@/renderers/Breadcrumb';
 import '@/renderers/Dialog';
 import '@/renderers/Drawer';
 import '@/renderers/Remark';
+import '@/renderers/Panel';
 import '@/renderers/Action';
 import '@/renderers/Service';
 import '@/renderers/Table';

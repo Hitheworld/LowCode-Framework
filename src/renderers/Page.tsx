@@ -8,7 +8,7 @@ import { RootStoreContext } from '@/store';
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
-function Page(props: any) {
+function PageRenderer(props: any) {
   const {
     title,
     subTitle,
@@ -254,4 +254,4 @@ function Page(props: any) {
 export default Renderer({
   type: 'page',
   isolateScope: true,
-})(Page);
+})(PageRenderer);
