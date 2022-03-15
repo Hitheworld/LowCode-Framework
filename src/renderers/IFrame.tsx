@@ -49,7 +49,7 @@ function IFrameRenderer(props: IFrame.IFrameProps) {
     src && postMessage('init', data);
   };
 
-  const iFrameRef = useRef(null);
+  const iFrameRef = useRef<HTMLIFrameElement | null>(null);
   const postMessage = (type: string, data: any) => {
     (iFrameRef.current as HTMLIFrameElement)?.contentWindow?.postMessage(
       {
