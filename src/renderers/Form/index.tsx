@@ -33,11 +33,183 @@ function FormRenderer(props: any) {
     console.log('Failed:', errorInfo);
   };
 
+  const renderChild = (
+    control: Schema.SchemaNode,
+    key: any = '',
+    otherProps: Partial<Form.FormProps> = {},
+    region: string = ''
+  ): React.ReactNode => {
+    if (!control) {
+      return null;
+    } else if (typeof control === 'string') {
+      control = {
+        type: 'tpl',
+        tpl: control,
+      };
+    }
+    const currProps = {
+      ...props,
+      ...otherProps,
+    };
+    const form = props?.store;
+    const {
+      render,
+      mode,
+      horizontal,
+      store,
+      disabled,
+      controlWidth,
+      resolveDefinitions,
+      lazyChange,
+      formLazyChange,
+    } = currProps;
+    const subProps = {
+      formStore: form,
+      data: store?.data,
+      key: `${(control as Schema.Schema).name || ''}-${
+        (control as Schema.Schema).type
+      }-${key}`,
+      formInited: form?.inited,
+      formSubmited: form?.submited,
+      formMode: mode,
+      formHorizontal: horizontal,
+      controlWidth,
+      disabled: disabled || (control as Schema.Schema).disabled || form?.loading,
+      btnDisabled: form?.loading || form?.validating,
+      // onAction: this.handleAction,
+      // onQuery: this.handleQuery,
+      // onChange: this.handleChange,
+      // onBulkChange: this.handleBulkChange,
+      // addHook: this.addHook,
+      // removeHook: this.removeHook,
+      // renderFormItems: this.renderFormItems,
+      formPristine: form?.pristine,
+      // value: (control as any)?.name
+      //   ? getVariable(form.data, (control as any)?.name, canAccessSuperData)
+      //   : (control as any)?.value,
+      // defaultValue: (control as any)?.value
+    };
+    let subSchema: any = {
+      ...control,
+    };
+    if (subSchema.$ref) {
+      subSchema = {
+        ...resolveDefinitions(subSchema.$ref),
+        ...subSchema,
+      };
+    }
+    lazyChange === false && (subSchema.changeImmediately = true);
+    return render(`${region ? `${region}/` : ''}${key}`, subSchema, subProps);
+  };
+
+  const renderChildren = (
+    children: Array<any>,
+    region: string,
+    otherProps: Partial<Form.FormProps> = {}
+  ) => {
+    children = children || [];
+
+    if (!Array.isArray(children)) {
+      children = [children];
+    }
+
+    if (props.mode === 'row') {
+      const ns = props.classPrefix;
+
+      children = flatten(children).filter((item) => {
+        if (
+          (item as Schema.Schema).hidden ||
+          (item as Schema.Schema).visible === false
+        ) {
+          return false;
+        }
+
+        const exprProps = getExprProperties(
+          item as Schema.Schema,
+          props.store?.data,
+          undefined,
+          props
+        );
+        if (exprProps.hidden || exprProps.visible === false) {
+          return false;
+        }
+
+        return true;
+      });
+
+      if (!children.length) {
+        return null;
+      }
+
+      return (
+        <div className={`${ns}Form-row`}>
+          {children.map((control, key) =>
+            ~['hidden', 'formula'].indexOf((control as any).type) ||
+            (control as any).mode === 'inline' ? (
+              renderChild(control, key, otherProps)
+            ) : (
+              <div
+                key={key}
+                className={cx(
+                  `${ns}Form-col`,
+                  (control as Schema.Schema).columnClassName
+                )}
+              >
+                {renderChild(control, '', {
+                  ...otherProps,
+                  mode: 'row',
+                })}
+              </div>
+            )
+          )}
+        </div>
+      );
+    }
+
+    return children.map((control, key) =>
+      renderChild(control, key, otherProps, region)
+    );
+  };
+
+  const renderFormItems = (
+    schema: Partial<Form.FormSchema> & {
+      controls?: Array<any>;
+    },
+    region: string = '',
+    otherProps: Partial<Form.FormProps> = {}
+  ) => {
+    let body: Array<any> = Array.isArray(schema.body)
+      ? schema.body
+      : schema.body
+      ? [schema.body]
+      : [];
+
+    // 旧用法，让 wrapper 走走 compat 逻辑兼容旧用法
+    // 后续可以删除。
+    if (!body.length && schema.controls) {
+      console.warn('请用 body 代替 controls');
+      body = [
+        {
+          size: 'none',
+          type: 'wrapper',
+          wrap: false,
+          controls: schema.controls,
+        },
+      ];
+    }
+
+    return renderChildren(body, region, otherProps);
+  };
+
   const renderBody = () => {
     return (
-      <></>
-    )
-  }
+      <>
+        {renderFormItems({
+          body: props.body,
+        })}
+      </>
+    );
+  };
 
   let body: JSX.Element = renderBody();
 
