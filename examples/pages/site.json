@@ -158,25 +158,25 @@
         "children": [
           {
             "label": "基础表单",
-            "url": "/crud/list",
+            "url": "/other/basic-form",
             "icon": "fa fa-list",
             "schemaApi": "get:./pages/form-basic.json"
           },
           {
             "label": "复杂表单",
-            "url": "/crud/list",
+            "url": "/other/complex-form",
             "icon": "fa fa-list",
             "schemaApi": "get:./pages/crud-advance.json"
           },
           {
             "label": "代码编辑器",
-            "url": "/crud/list",
+            "url": "/other/editor",
             "icon": "fa fa-list",
             "schemaApi": "get:./pages/editor.json"
           },
           {
             "label": "Dashboard",
-            "url": "/crud/list",
+            "url": "/other/dashboard",
             "icon": "fa fa-list",
             "schemaApi": "get:./pages/console.json"
           }
