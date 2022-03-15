@@ -74,7 +74,8 @@ function FormRenderer(props: any) {
       formMode: mode,
       formHorizontal: horizontal,
       controlWidth,
-      disabled: disabled || (control as Schema.Schema).disabled || form?.loading,
+      disabled:
+        disabled || (control as Schema.Schema).disabled || form?.loading,
       btnDisabled: form?.loading || form?.validating,
       // onAction: this.handleAction,
       // onQuery: this.handleQuery,

@@ -4,60 +4,144 @@ import { Renderer, registerRenderer } from '@/factory';
 import { OptionsControl } from './Options';
 
 function InputTextRenderer(props) {
+  const { label, name, required, message } = props;
+  console.log('input-text==props:', props);
   return (
     <Form.Item
-      label="Username"
-      name="username"
-      rules={[{ required: true, message: 'Please input your username!' }]}
+      label={label}
+      name={name}
+      rules={[{ required: required, message: message }]}
     >
       <Input />
     </Form.Item>
   );
 }
-export default Renderer({
+InputTextRenderer.defaultProps = {
+  required: false,
+  message: '这是一个必填项',
+};
+export const TextControlRenderer = Renderer({
   type: 'input-text',
 })(InputTextRenderer);
 
-// function InputPasswordRenderer() {
-//   return <Input.Password />;
-// }
-// export OptionsControl({
-//   type: 'input-password',
-// })(InputPasswordRenderer);
+function InputPasswordRenderer(props) {
+  const { label, name, required, message } = props;
+  return (
+    <Form.Item
+      label={label}
+      name={name}
+      rules={[{ required: required, message: message }]}
+    >
+      <Input />
+    </Form.Item>
+  );
+}
+InputPasswordRenderer.defaultProps = {
+  required: false,
+  message: '这是一个必填项',
+};
+export const PasswordControlRenderer = Renderer({
+  type: 'input-password',
+})(InputPasswordRenderer);
 
-// function InputEmailRenderer() {
-//   return <Input />;
-// }
-// export OptionsControl({
-//   type: 'input-email',
-//   validations: 'isEmail',
-// })(InputEmailRenderer);
+function InputEmailRenderer(props) {
+  const { label, name, required, message } = props;
+  return (
+    <Form.Item
+      label={label}
+      name={name}
+      rules={[{ required: required, message: message }]}
+    >
+      <Input />
+    </Form.Item>
+  );
+}
+InputEmailRenderer.defaultProps = {
+  required: false,
+  message: '这是一个必填项',
+};
+export const EmailControlRenderer = Renderer({
+  type: 'input-email',
+  validations: 'isEmail',
+})(InputEmailRenderer);
 
-// function InputUrlRenderer() {
-//   return <Input />;
-// }
-// export OptionsControl({
-//   type: 'input-url',
-//   validations: 'isUrl',
-// })(InputUrlRenderer);
+function InputUrlRenderer(props) {
+  const { label, name, required, message } = props;
+  return (
+    <Form.Item
+      label={label}
+      name={name}
+      rules={[{ required: required, message: message }]}
+    >
+      <Input />
+    </Form.Item>
+  );
+}
+InputUrlRenderer.defaultProps = {
+  required: false,
+  message: '这是一个必填项',
+};
+export const UrlControlRenderer = Renderer({
+  type: 'input-url',
+  validations: 'isUrl',
+})(InputUrlRenderer);
 
-// function NativeDateRenderer() {
-//   return <Input />;
-// }
-// export OptionsControl({
-//   type: 'native-date',
-// })(InputDateRenderer);
+function NativeDateRenderer(props) {
+  const { label, name, required, message } = props;
+  return (
+    <Form.Item
+      label={label}
+      name={name}
+      rules={[{ required: required, message: message }]}
+    >
+      <Input />
+    </Form.Item>
+  );
+}
+NativeDateRenderer.defaultProps = {
+  required: false,
+  message: '这是一个必填项',
+};
+export const NativeDateControlRenderer = Renderer({
+  type: 'native-date',
+})(NativeDateRenderer);
 
-// function NativeTimeRenderer() {
-//   return <Input />;
-// }
-// export OptionsControl({
-//   type: 'native-time',
-// })(NativeTimeRenderer);
+function NativeTimeRenderer(props) {
+  const { label, name, required, message } = props;
+  return (
+    <Form.Item
+      label={label}
+      name={name}
+      rules={[{ required: required, message: message }]}
+    >
+      <Input />
+    </Form.Item>
+  );
+}
+NativeTimeRenderer.defaultProps = {
+  required: false,
+  message: '这是一个必填项',
+};
+export const NativeTimeControlRenderer = Renderer({
+  type: 'native-time',
+})(NativeTimeRenderer);
 
-// function NativeNumberRenderer() {
-//   return <Input />;
-// }
-// export OptionsControl({
-//   type: 'native-number',
-// })(NativeNumberRenderer);
+function NativeNumberRenderer(props) {
+  const { label, name, required, message } = props;
+  return (
+    <Form.Item
+      label={label}
+      name={name}
+      rules={[{ required: required, message: message }]}
+    >
+      <Input />
+    </Form.Item>
+  );
+}
+NativeNumberRenderer.defaultProps = {
+  required: false,
+  message: '这是一个必填项',
+};
+export const NativeNumberControlRenderer = Renderer({
+  type: 'native-number',
+})(NativeNumberRenderer);
