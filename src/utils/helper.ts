@@ -490,6 +490,31 @@ export function findTree<T extends Helper.TreeItem>(
 }
 
 /**
+ * 从树中获取某个值的所有祖先
+ * @param tree
+ * @param value
+ */
+export function getTreeAncestors<T extends Helper.TreeItem>(
+  tree: Array<T>,
+  value: T,
+  includeSelf = false
+): Array<T> | null {
+  let ancestors: Array<T> | null = null;
+  findTree(tree, (item, index, level, paths) => {
+    if (item === value) {
+      ancestors = paths;
+      if (includeSelf) {
+        ancestors.push(item);
+      }
+      return true;
+    }
+    return false;
+  });
+
+  return ancestors;
+}
+
+/**
  * 给目标对象添加其他属性，可读取但是不会被遍历。
  * @param target
  * @param props

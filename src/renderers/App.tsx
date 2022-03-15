@@ -13,7 +13,7 @@ import { createObject } from '@/utils/helper';
 import { useRequest } from '@/hooks/useRequest';
 import AsideNav from '@/components/AsideNav';
 import NotFound from '@/components/NotFound';
-import { findTree } from '@/utils/helper';
+import { findTree, getTreeAncestors } from '@/utils/helper';
 import { updateLocation, jumpTo, isCurrentUrl } from '@/utils/appUtils';
 import { RootStoreContext } from '@/store';
 
@@ -76,10 +76,23 @@ function AppRenderer(props: any) {
         }
         return false;
       });
+
+      // 获取从树中获取某个值的所有祖先
+      const _parentMenus = getTreeAncestors(state.navigations, page, false);
+      const _parentMenuItem = _parentMenus?.length ? _parentMenus?.[0] : page;
+
+      console.log('_parentMenuItem:', _parentMenuItem);
+      console.log('parent:', _parentMenus);
+      console.log('page:', page);
       const _ids = page?.id ? [page?.id?.toString()] : [];
-      const _children = page?.children || [];
-      setSelectedKeys(_ids);
-      setSubMenus(_children);
+      const _selectIds = _parentMenuItem?.id
+        ? [_parentMenuItem?.id?.toString()]
+        : _ids;
+      setSelectedKeys(_selectIds);
+      const _childrenMenus = _parentMenuItem
+        ? _parentMenuItem?.children
+        : page?.children || [];
+      setSubMenus(_childrenMenus);
     }
   }, [state.navigations]);
 
