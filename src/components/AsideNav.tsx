@@ -43,9 +43,7 @@ function AsideNav(props: any) {
       const _ids = parentMenus
         ?.filter((o) => o?.id)
         ?.map((o) => o?.id?.toString());
-      const _currSelectIds = _ids?.length
-        ? _ids?.pop()
-        : [];
+      const _currSelectIds = _ids?.length ? [_ids?.pop()] : [];
       console.log('_currSelectIds:', _currSelectIds);
       setSelectedKeys(_currSelectIds);
       setOpenKeys(_ids);
