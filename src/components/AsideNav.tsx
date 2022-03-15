@@ -10,7 +10,7 @@ import {
   TeamOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { mapTree, findTree } from '@/utils/helper';
+import { mapTree, findTree, getTreeAncestors } from '@/utils/helper';
 import { updateLocation, jumpTo, isCurrentUrl } from '@/utils/appUtils';
 import { RootStoreContext } from '@/store';
 
@@ -22,7 +22,8 @@ function AsideNav(props: any) {
 
   const [state, dispatch] = useContext(RootStoreContext);
 
-  const [bcnIds, setBcnIds] = useState([]);
+  const [openKeys, setOpenKeys] = useState([]);
+  const [selectedKeys, setSelectedKeys] = useState([]);
   useEffect(() => {
     if (navigations?.length) {
       let matched: any;
@@ -37,8 +38,20 @@ function AsideNav(props: any) {
         return false;
       });
 
+      // 获取从树中获取某个值的所有祖先
+      const parentMenus = getTreeAncestors(state.navigations, page, true);
+      const _ids = parentMenus
+        ?.filter((o) => o?.id)
+        ?.map((o) => o?.id?.toString());
+      const _currSelectIds = _ids?.length
+        ? [_ids?.[_ids?.length - 1]?.toString()]
+        : [];
+      console.log('_currSelectIds:', _currSelectIds);
+      setSelectedKeys(_currSelectIds);
+      setOpenKeys(_ids);
+
       let bcn: Array<any> = [];
-      findTree(navigations, (item, index, level, paths) => {
+      findTree(parentMenus, (item, index, level, paths) => {
         if (item.id === page?.id) {
           bcn = paths.filter((item) => item.path && item.label);
           bcn.push({
@@ -56,9 +69,8 @@ function AsideNav(props: any) {
         }
         return false;
       });
-
-      const _ids = bcn?.filter((o) => o?.id)?.map((o) => o?.id?.toString());
-      setBcnIds(_ids);
+      console.log('bcn:', bcn);
+      console.log('parentMenus:', parentMenus);
     }
   }, [navigations]);
 
@@ -135,8 +147,8 @@ function AsideNav(props: any) {
       ) : navigations?.length ? (
         <Menu
           theme="light"
-          defaultOpenKeys={bcnIds}
-          defaultSelectedKeys={bcnIds[bcnIds?.length - 1]}
+          openKeys={openKeys}
+          selectedKeys={selectedKeys}
           mode="inline"
         >
           {Array.isArray(navigations)
