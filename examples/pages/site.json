@@ -38,7 +38,8 @@
                         {
                           "type": "input-text",
                           "name": "name",
-                          "label": "姓名："
+                          "label": "姓名：",
+                          "required": true
                         },
                         {
                           "name": "email",
