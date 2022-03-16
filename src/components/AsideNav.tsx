@@ -40,9 +40,7 @@ function AsideNav(props: any) {
 
       // 获取从树中获取某个值的所有祖先
       const parentMenus = getTreeAncestors(navigations, page, true);
-      const _ids = parentMenus
-        ?.filter((o) => o?.id)
-        ?.map((o) => o?.id?.toString());
+      const _ids = parentMenus?.map((o) => o?.id?.toString());
       const _currOpenIds = page?.children?.length
         ? [page?.children?.[0]?.id?.toString()]
         : page?.id
