@@ -2,12 +2,20 @@ import isPlainObject from 'lodash/isPlainObject';
 import qs from 'qs';
 import { evalExpression } from './tpl';
 
+/**
+ * 基于时间戳的 uuid
+ *
+ * @returns uniqueId
+ */
+export const uuid = () => {
+  return (+new Date()).toString(36);
+};
+
 // 参考 https://github.com/streamich/v4-uuid
 const str = () =>
   (
     '00000000000000000' + (Math.random() * 0xffffffffffffffff).toString(16)
   ).slice(-16);
-
 export const uuidv4 = () => {
   const a = str();
   const b = str();
