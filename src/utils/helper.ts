@@ -515,6 +515,16 @@ export function getTreeAncestors<T extends Helper.TreeItem>(
 }
 
 /**
+ * 从树中获取某个值的上级
+ * @param tree
+ * @param value
+ */
+ export function getTreeParent<T extends TreeItem>(tree: Array<T>, value: T) {
+  const ancestors = getTreeAncestors(tree, value);
+  return ancestors?.length ? ancestors[ancestors.length - 1] : null;
+}
+
+/**
  * 给目标对象添加其他属性，可读取但是不会被遍历。
  * @param target
  * @param props

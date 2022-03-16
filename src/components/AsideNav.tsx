@@ -22,8 +22,8 @@ function AsideNav(props: any) {
 
   const [state, dispatch] = useContext(RootStoreContext);
 
-  const [openKeys, setOpenKeys] = useState([]);
-  const [selectedKeys, setSelectedKeys] = useState([]);
+  const [openKeys, setOpenKeys] = useState<string[]>([]);
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   useEffect(() => {
     if (navigations?.length) {
       let matched: any;
