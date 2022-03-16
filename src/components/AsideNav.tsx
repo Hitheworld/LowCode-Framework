@@ -39,13 +39,16 @@ function AsideNav(props: any) {
       });
 
       // 获取从树中获取某个值的所有祖先
-      const parentMenus = getTreeAncestors(state.navigations, page, true);
+      const parentMenus = getTreeAncestors(navigations, page, true);
       const _ids = parentMenus
         ?.filter((o) => o?.id)
         ?.map((o) => o?.id?.toString());
-      const _currSelectIds = _ids?.length ? [_ids?.pop()] : [];
-      console.log('_currSelectIds:', _currSelectIds);
-      setSelectedKeys(_currSelectIds);
+      const _currOpenIds = page?.children?.length
+        ? [page?.children?.[0]?.id?.toString()]
+        : page?.id
+        ? [page?.id?.toString()]
+        : [];
+      setSelectedKeys(_currOpenIds);
       setOpenKeys(_ids);
 
       let bcn: Array<any> = [];
@@ -67,8 +70,7 @@ function AsideNav(props: any) {
         }
         return false;
       });
-      console.log('bcn:', bcn);
-      console.log('parentMenus:', parentMenus);
+      // console.log('bcn:', bcn);
     }
   }, [navigations]);
 
