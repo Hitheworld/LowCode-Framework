@@ -2,6 +2,28 @@ import isPlainObject from 'lodash/isPlainObject';
 import qs from 'qs';
 import { evalExpression } from './tpl';
 
+// 参考 https://github.com/streamich/v4-uuid
+const str = () =>
+  (
+    '00000000000000000' + (Math.random() * 0xffffffffffffffff).toString(16)
+  ).slice(-16);
+
+export const uuidv4 = () => {
+  const a = str();
+  const b = str();
+  return (
+    a.slice(0, 8) +
+    '-' +
+    a.slice(8, 12) +
+    '-4' +
+    a.slice(13) +
+    '-a' +
+    b.slice(1, 4) +
+    '-' +
+    b.slice(4)
+  );
+};
+
 /**
  * 将例如像 a.b.c 或 a[1].b 的字符串转换为路径数组
  *
@@ -490,6 +512,241 @@ export function findTree<T extends Helper.TreeItem>(
 }
 
 /**
+ * 过滤树节点
+ *
+ * @param tree
+ * @param iterator
+ */
+export function filterTree<T extends TreeItem>(
+  tree: Array<T>,
+  iterator: (item: T, key: number, level: number) => any,
+  level: number = 1,
+  depthFirst: boolean = false
+) {
+  if (depthFirst) {
+    return tree
+      .map((item) => {
+        let children: TreeArray | undefined = item.children
+          ? filterTree(item.children, iterator, level + 1, depthFirst)
+          : undefined;
+
+        if (
+          Array.isArray(children) &&
+          Array.isArray(item.children) &&
+          children.length !== item.children.length
+        ) {
+          item = { ...item, children: children };
+        }
+
+        return item;
+      })
+      .filter((item, index) => iterator(item, index, level));
+  }
+
+  return tree
+    .filter((item, index) => iterator(item, index, level))
+    .map((item) => {
+      if (item.children && item.children.splice) {
+        let children = filterTree(
+          item.children,
+          iterator,
+          level + 1,
+          depthFirst
+        );
+
+        if (
+          Array.isArray(children) &&
+          Array.isArray(item.children) &&
+          children.length !== item.children.length
+        ) {
+          item = { ...item, children: children };
+        }
+      }
+      return item;
+    });
+}
+
+/**
+ * 判断树中是否有某些节点满足某个条件。
+ * @param tree
+ * @param iterator
+ */
+export function someTree<T extends TreeItem>(
+  tree: Array<T>,
+  iterator: (item: T, key: number, level: number, paths: Array<T>) => boolean
+): boolean {
+  let result = false;
+
+  everyTree(tree, (item: T, key: number, level: number, paths: Array<T>) => {
+    if (iterator(item, key, level, paths)) {
+      result = true;
+      return false;
+    }
+    return true;
+  });
+
+  return result;
+}
+
+/**
+ * 遍历树
+ * @param tree
+ * @param iterator
+ */
+export function eachTree<T extends TreeItem>(
+  tree: Array<T>,
+  iterator: (item: T, key: number, level: number) => any,
+  level: number = 1
+) {
+  tree.map((item, index) => {
+    iterator(item, index, level);
+
+    if (item.children && item.children.splice) {
+      eachTree(item.children, iterator, level + 1);
+    }
+  });
+}
+
+/**
+ * 将树打平变成一维数组，可以传入第二个参数实现打平节点中的其他属性。
+ *
+ * 比如：
+ *
+ * flattenTree([
+ *     {
+ *         id: 1,
+ *         children: [
+ *              { id: 2 },
+ *              { id: 3 },
+ *         ]
+ *     }
+ * ], item => item.id); // 输出位 [1, 2, 3]
+ *
+ * @param tree
+ * @param mapper
+ */
+export function flattenTree<T extends TreeItem>(tree: Array<T>): Array<T>;
+export function flattenTree<T extends TreeItem, U>(
+  tree: Array<T>,
+  mapper: (value: T, index: number) => U
+): Array<U>;
+export function flattenTree<T extends TreeItem, U>(
+  tree: Array<T>,
+  mapper?: (value: T, index: number) => U
+): Array<U> {
+  let flattened: Array<any> = [];
+  eachTree(tree, (item, index) =>
+    flattened.push(mapper ? mapper(item, index) : item)
+  );
+  return flattened;
+}
+
+/**
+ * 获取树
+ */
+export function getTree<T extends TreeItem>(
+  tree: Array<T>,
+  idx: Array<number> | number
+): T | undefined | null {
+  const indexes = Array.isArray(idx) ? idx.concat() : [idx];
+  const lastIndex = indexes.pop()!;
+  let list: Array<T> | null = tree;
+  for (let i = 0, len = indexes.length; i < len; i++) {
+    const index = indexes[i];
+    if (!list![index]) {
+      list = null;
+      break;
+    }
+    list = list![index].children as any;
+  }
+  return list ? list[lastIndex] : undefined;
+}
+
+/**
+ * 在树中查找节点, 返回下标数组。
+ * @param tree
+ * @param iterator
+ */
+export function findTreeIndex<T extends TreeItem>(
+  tree: Array<T>,
+  iterator: (item: T, key: number, level: number, paths: Array<T>) => any
+): Array<number> | undefined {
+  let idx: Array<number> = [];
+
+  findTree(tree, (item, index, level, paths) => {
+    if (iterator(item, index, level, paths)) {
+      idx = [index];
+      paths = paths.concat();
+      paths.unshift({
+        children: tree,
+      } as any);
+
+      for (let i = paths.length - 1; i > 0; i--) {
+        const prev = paths[i - 1];
+        const current = paths[i];
+        idx.unshift(prev.children!.indexOf(current));
+      }
+      return true;
+    }
+    return false;
+  });
+  return idx.length ? idx : undefined;
+}
+
+/**
+ * 操作树，遵循 imutable, 每次返回一个新的树。
+ * 类似数组的 splice 不同的地方这个方法不修改原始数据，
+ * 同时第二个参数不是下标，而是下标数组，分别代表每一层的下标。
+ *
+ * 至于如何获取下标数组，请查看 findTreeIndex
+ *
+ * @param tree
+ * @param idx
+ * @param deleteCount
+ * @param ...items
+ */
+export function spliceTree<T extends TreeItem>(
+  tree: Array<T>,
+  idx: Array<number> | number,
+  deleteCount: number = 0,
+  ...items: Array<T>
+): Array<T> {
+  const list = tree.concat();
+  if (typeof idx === 'number') {
+    list.splice(idx, deleteCount, ...items);
+  } else if (Array.isArray(idx) && idx.length) {
+    idx = idx.concat();
+    const lastIdx = idx.pop()!;
+    let host = idx.reduce((list: Array<T>, idx) => {
+      const child = {
+        ...list[idx],
+        children: list[idx].children ? list[idx].children!.concat() : [],
+      };
+      list[idx] = child;
+      return child.children;
+    }, list);
+    host.splice(lastIdx, deleteCount, ...items);
+  }
+  return list;
+}
+
+/**
+ * 计算树的深度
+ * @param tree
+ */
+export function getTreeDepth<T extends TreeItem>(tree: Array<T>): number {
+  return Math.max(
+    ...tree.map((item) => {
+      if (Array.isArray(item.children)) {
+        return 1 + getTreeDepth(item.children);
+      }
+
+      return 1;
+    })
+  );
+}
+
+/**
  * 从树中获取某个值的所有祖先
  * @param tree
  * @param value
@@ -519,7 +776,7 @@ export function getTreeAncestors<T extends Helper.TreeItem>(
  * @param tree
  * @param value
  */
- export function getTreeParent<T extends TreeItem>(tree: Array<T>, value: T) {
+export function getTreeParent<T extends TreeItem>(tree: Array<T>, value: T) {
   const ancestors = getTreeAncestors(tree, value);
   return ancestors?.length ? ancestors[ancestors.length - 1] : null;
 }
