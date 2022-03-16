@@ -22,9 +22,16 @@ function AsideNav(props: any) {
 
   const [state, dispatch] = useContext(RootStoreContext);
 
+  // 展开与收缩
+  const [collapsed, setCollapsed] = useState<boolean>(false);
+  const handleCollapse = (is: boolean) => {
+    setCollapsed(is);
+  };
+
   const [openKeys, setOpenKeys] = useState<string[]>([]);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   useEffect(() => {
+    setCollapsed(false);
     if (navigations?.length) {
       let matched: any;
       let page = findTree(navigations, (item) => {
@@ -80,12 +87,6 @@ function AsideNav(props: any) {
   // 点击 MenuItem 调用此函数
   const handleClick = (e) => {
     setSelectedKeys(e.key);
-  };
-
-  // 展开与收缩
-  const [collapsed, setCollapsed] = useState<boolean>(false);
-  const handleCollapse = (is: boolean) => {
-    setCollapsed(is);
   };
 
   // 子目录
