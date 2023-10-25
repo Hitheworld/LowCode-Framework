@@ -60,7 +60,7 @@
                   "body": [
                     {
                       "type": "tpl",
-                      "tpl": "页面A-2"
+                      "tpl": "<div>页面A-2-内容页面</div>"
                     }
                   ]
                 }
@@ -71,7 +71,18 @@
                 "schema": {
                   "type": "page",
                   "title": "页面A-3",
-                  "body": "页面A-3"
+                  "body": [
+                    "页面A-3",
+                    {
+                      "label": "弹框",
+                      "type": "button",
+                      "actionType": "dialog",
+                      "dialog": {
+                        "title": "弹框",
+                        "body": "这是个简单的弹框。"
+                      }
+                    }
+                  ]
                 }
               },
               {

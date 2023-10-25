@@ -81,9 +81,7 @@ function AppRenderer(props: any) {
       const _parentMenus = getTreeAncestors(state.navigations, page, false);
       const _parentMenuItem = _parentMenus?.length ? _parentMenus?.[0] : page;
 
-      console.log('_parentMenuItem:', _parentMenuItem);
-      console.log('parent:', _parentMenus);
-      console.log('page:', page);
+
       const _ids = page?.id ? [page?.id?.toString()] : [];
       const _selectIds = _parentMenuItem?.id
         ? [_parentMenuItem?.id?.toString()]
@@ -100,17 +98,14 @@ function AppRenderer(props: any) {
   const [collapsed, setCollapsed] = useState<boolean>(true);
   // 移入
   const handleMouseOver = (e: MouseEvent<HTMLElement>) => {
-    console.log('移动MouseOver:', e);
     setCollapsed(false);
   };
 
   // 移出
   const handleMouseOut = (e: MouseEvent<HTMLElement>) => {
-    console.log('移动MouseOut:', e);
     setCollapsed(true);
   };
 
-  console.log('state.navigations', state.navigations);
 
   return (
     <>

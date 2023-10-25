@@ -61,14 +61,19 @@ function Tpl(props: any) {
     // const value = getPropValue(props);
     const value = '';
     if (raw) {
+      console.log("==============1,raw:", raw);
       return raw;
     } else if (html) {
+      console.log("==============2,html:", html, data);
       return filter(html, data);
     } else if (tpl) {
+      console.log("==============3,html:", tpl, data);
       return filter(tpl, data);
     } else if (text) {
+      console.log("==============4,html:", text, data);
       return escapeHtml(filter(text, data));
     } else {
+      console.log("==============5,value:", value);
       return value == null || value === ''
         ? `<span class="text-muted">${placeholder}</span>`
         : typeof value === 'string'

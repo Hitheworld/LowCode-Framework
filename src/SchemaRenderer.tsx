@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
 import omit from 'lodash/omit';
 import { loadRenderer, resolveRenderer, filterSchema } from '@/factory';
 import { renderChild, renderChildren } from '@/Root';
@@ -42,7 +42,7 @@ function PlaceholderComponent(props: any) {
   return null;
 }
 
-export function SchemaRenderer(props: SchemaRenderer.SchemaRendererProps) {
+function SchemaRenderer(props: SchemaRenderer.SchemaRendererProps, ref: any) {
   const renderer = useRef<Renderer.RendererConfig | null>(null);
   const rendererKey = useRef('');
   // 这个方法用于依据 path 匹配组件
@@ -180,7 +180,8 @@ export function SchemaRenderer(props: SchemaRenderer.SchemaRendererProps) {
           $path: $path,
           $schema: schema,
           render: currRenderChild,
-          forwardedRef: refFn.current,
+          // forwardedRef: refFn.current,
+          forwardedRef: ref,
         });
   }
 
@@ -235,7 +236,7 @@ export function SchemaRenderer(props: SchemaRenderer.SchemaRendererProps) {
     );
   }
 
-  schema = filterSchema(schema, renderer, rest);
+  schema = filterSchema(schema, renderer.current, rest);
   // const {
   //   data: defaultData,
   //   value: defaultValue,
@@ -251,7 +252,7 @@ export function SchemaRenderer(props: SchemaRenderer.SchemaRendererProps) {
     rest.invisible &&
     (exprProps.hidden ||
       exprProps.visible === false ||
-      !renderer.isFormItem ||
+      !renderer.current.isFormItem ||
       (schema.visible !== false && !schema.hidden))
   ) {
     return null;
@@ -270,8 +271,11 @@ export function SchemaRenderer(props: SchemaRenderer.SchemaRendererProps) {
       defaultActiveKey={defaultActiveKey}
       $path={$path}
       $schema={{ ...schema, ...exprProps }}
-      ref={refFn}
+      // ref={refFn}
+      ref={ref}
       render={currRenderChild}
     />
   );
 }
+
+export default forwardRef(SchemaRenderer);

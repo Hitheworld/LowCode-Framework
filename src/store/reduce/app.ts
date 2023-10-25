@@ -160,14 +160,14 @@ const reducer = (state: AppStore.State, action: AppStore.IAction) => {
               .join('/')}`;
           if (path && path[0] !== '/') {
             let parentPath = '/';
-            let index = paths.length;
-            while (index > 0) {
-              const item = paths[index - 1];
-              if (item?.path) {
-                parentPath = item.path + '/';
+            let length = paths.length;
+            while (length > 0) {
+              const oItem = paths[length - 1];
+              if (oItem?.path) {
+                parentPath = oItem.path + '/';
                 break;
               }
-              index--;
+              length--;
             }
             path = parentPath + path;
           }
@@ -185,7 +185,7 @@ const reducer = (state: AppStore.State, action: AppStore.IAction) => {
       let id = 1;
       const _list = mapTree(
         getNav(_pageList),
-        (item: AsideNav.Navigation) => {
+        (item: any) => {
           const _path = item?.children?.length
             ? item?.children?.[0]?.path
             : item?.path;
